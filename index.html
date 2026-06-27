@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AP Microeconomics All-Units Practice Arena v3</title>
+<style>
+:root{
+  --primary:#3B82F6;
+  --secondary:#8B5CF6;
+  --success:#16A34A;
+  --warning:#D97706;
+  --danger:#DC2626;
+  --surface:#FFFFFF;
+  --text:#111827;
+  --muted:#4B5563;
+  --line:#D1D5DB;
+  --soft:#F9FAFB;
+  --ink:#111827;
+  --shadow:0 18px 50px rgba(17,24,39,.12);
+  --radius:24px;
+  --r-sm:14px;
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --primary:#60A5FA;
+  --secondary:#A78BFA;
+  --success:#4ADE80;
+  --warning:#FBBF24;
+  --danger:#F87171;
+  --surface:#111827;
+  --text:#F9FAFB;
+  --muted:#CBD5E1;
+  --line:#334155;
+  --soft:#0F172A;
+  --ink:#F8FAFC;
+  --shadow:0 18px 50px rgba(0,0,0,.42);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Open Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 1px 1px,rgba(17,24,39,.12) 1px,transparent 0) 0 0/18px 18px,
+    linear-gradient(135deg,#F8FAFC,#FFF7ED);
+  line-height:1.55;
+}
+button,select{font:inherit}
+button:focus-visible,select:focus-visible{
+  outline:4px solid rgba(59,130,246,.35);
+  outline-offset:3px;
+}
+.shell{
+  max-width:1040px;
+  margin:0 auto;
+  padding:24px 16px 80px;
+}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.logo{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:2px solid var(--ink);
+  background:
+    radial-gradient(circle at 3px 3px,var(--ink) 2px,transparent 2px) 0 0/9px 9px,
+    linear-gradient(135deg,var(--primary),var(--secondary));
+  box-shadow:5px 5px 0 var(--ink);
+  flex:0 0 auto;
+}
+h1{
+  margin:0;
+  font-family:"Space Grotesk","Open Sans",system-ui,sans-serif;
+  font-size:clamp(1.35rem,2.8vw,2.1rem);
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+.subtitle{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:.95rem;
+}
+.topActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.btn{
+  min-height:44px;
+  border:2px solid var(--ink);
+  border-radius:var(--r-sm);
+  background:var(--surface);
+  color:var(--text);
+  padding:10px 14px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.secondary{background:var(--secondary);color:#fff}
+.btn.success{background:var(--success);color:#fff}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.ghost{
+  background:#fff;
+  box-shadow:none;
+}
+.focusLayout{
+  display:grid;
+  gap:16px;
+}
+.practiceCard{
+  background:var(--surface);
+  border:2px solid var(--ink);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow),8px 8px 0 var(--ink);
+  overflow:hidden;
+}
+.practiceTop{
+  background:
+    radial-gradient(circle at 2px 2px,rgba(17,24,39,.18) 1px,transparent 1px) 0 0/12px 12px,
+    linear-gradient(135deg,#EFF6FF,#F5F3FF);
+  border-bottom:2px solid var(--ink);
+  padding:16px;
+}
+.controls{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:12px;
+}
+.controlGroup{
+  display:grid;
+  gap:6px;
+}
+label{
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:900;
+  color:#374151;
+}
+select{
+  width:100%;
+  min-height:46px;
+  border:2px solid var(--ink);
+  border-radius:14px;
+  background:#fff;
+  color:var(--text);
+  padding:10px 12px;
+  font-weight:800;
+}
+.topicRow{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 220px;
+  gap:12px;
+}
+.hidden{display:none!important}
+.practiceBody{
+  padding:22px;
+}
+.metaRow{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:34px;
+  padding:6px 10px;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:#fff;
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  font-size:.82rem;
+  font-weight:800;
+}
+.chip.primary{background:#DBEAFE}
+.chip.success{background:#DCFCE7}
+.chip.warning{background:#FEF3C7}
+.questionPrompt{
+  margin:0 0 16px;
+  font-family:"Space Grotesk","Open Sans",system-ui,sans-serif;
+  font-size:clamp(1.28rem,2.5vw,1.9rem);
+  line-height:1.18;
+  letter-spacing:-.025em;
+}
+.options{
+  display:grid;
+  gap:12px;
+}
+.option{
+  width:100%;
+  min-height:54px;
+  text-align:left;
+  border:2px solid var(--ink);
+  border-radius:18px;
+  background:#fff;
+  color:var(--text);
+  padding:14px 16px;
+  cursor:pointer;
+  font-weight:750;
+  box-shadow:3px 3px 0 rgba(17,24,39,.9);
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
+}
+.option:hover{
+  transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 rgba(17,24,39,.9);
+  background:#F8FAFC;
+}
+.option.selected{
+  background:#DBEAFE;
+  border-color:var(--primary);
+}
+.option.correct{
+  background:#DCFCE7;
+  border-color:var(--success);
+}
+.option.wrong{
+  background:#FEE2E2;
+  border-color:var(--danger);
+}
+.option:disabled{cursor:default}
+.feedback{
+  display:none;
+  margin-top:14px;
+  border:2px solid var(--ink);
+  border-radius:18px;
+  padding:14px 16px;
+  background:#fff;
+}
+.feedback.show{display:block}
+.feedback.good{background:#DCFCE7}
+.feedback.bad{background:#FEE2E2}
+.actionRow{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+.compactMastery{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:12px;
+  margin-top:16px;
+  padding:14px;
+  border:2px solid var(--ink);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 2px 2px,rgba(17,24,39,.10) 1px,transparent 1px) 0 0/12px 12px,
+    #F9FAFB;
+}
+.compactText{
+  font-weight:900;
+}
+.progress{
+  height:12px;
+  background:#E5E7EB;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  overflow:hidden;
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--success));
+}
+.progressDrawer{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  pointer-events:none;
+}
+.drawerScrim{
+  position:absolute;
+  inset:0;
+  background:rgba(17,24,39,.28);
+  opacity:0;
+  transition:.18s ease;
+}
+.drawerPanel{
+  position:absolute;
+  right:0;
+  top:0;
+  height:100%;
+  width:min(460px,100vw);
+  background:#fff;
+  border-left:3px solid var(--ink);
+  box-shadow:-18px 0 50px rgba(17,24,39,.18);
+  transform:translateX(105%);
+  transition:.22s ease;
+  overflow:auto;
+}
+.progressDrawer.open{
+  pointer-events:auto;
+}
+.progressDrawer.open .drawerScrim{opacity:1}
+.progressDrawer.open .drawerPanel{transform:translateX(0)}
+.drawerHeader{
+  position:sticky;
+  top:0;
+  background:
+    radial-gradient(circle at 2px 2px,rgba(17,24,39,.18) 1px,transparent 1px) 0 0/12px 12px,
+    linear-gradient(135deg,#EFF6FF,#F5F3FF);
+  border-bottom:3px solid var(--ink);
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  z-index:1;
+}
+.drawerHeader h2{
+  margin:0;
+  font-family:"Space Grotesk","Open Sans",system-ui,sans-serif;
+  letter-spacing:-.02em;
+}
+.drawerBody{padding:16px}
+.unitProgressList{
+  display:grid;
+  gap:12px;
+}
+.unitProgress{
+  border:2px solid var(--ink);
+  border-radius:18px;
+  background:#fff;
+  padding:12px;
+  box-shadow:4px 4px 0 var(--ink);
+}
+.unitProgressTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-weight:900;
+}
+.statusPill{
+  border:2px solid var(--ink);
+  border-radius:999px;
+  padding:4px 8px;
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  font-size:.76rem;
+  font-weight:900;
+  white-space:nowrap;
+  background:#FEF3C7;
+}
+.statusPill.mastered{background:#DCFCE7}
+.miniStats{
+  margin-top:8px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  font-size:.86rem;
+}
+.miniStat{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--soft);
+  padding:8px;
+}
+.helpText{
+  color:var(--muted);
+  margin:8px 0 14px;
+}
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:60;
+  background:var(--ink);
+  color:#fff;
+  border:2px solid var(--ink);
+  border-radius:16px;
+  padding:12px 14px;
+  box-shadow:5px 5px 0 var(--secondary);
+  opacity:0;
+  transition:.18s ease;
+  pointer-events:none;
+}
+.toast.show{opacity:1}
+
+html[data-theme="dark"] body{
+  background:
+    radial-gradient(circle at 1px 1px,rgba(248,250,252,.16) 1px,transparent 0) 0 0/18px 18px,
+    linear-gradient(135deg,#020617,#111827 55%,#1E1B4B);
+}
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] .practiceCard,
+html[data-theme="dark"] .drawerPanel{
+  background:#0F172A;
+}
+html[data-theme="dark"] .practiceTop,
+html[data-theme="dark"] .drawerHeader{
+  background:
+    radial-gradient(circle at 2px 2px,rgba(248,250,252,.16) 1px,transparent 1px) 0 0/12px 12px,
+    linear-gradient(135deg,#172554,#312E81);
+}
+html[data-theme="dark"] .logo{
+  background:
+    radial-gradient(circle at 3px 3px,#F8FAFC 2px,transparent 2px) 0 0/9px 9px,
+    linear-gradient(135deg,var(--primary),var(--secondary));
+}
+html[data-theme="dark"] .btn,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .option,
+html[data-theme="dark"] .chip,
+html[data-theme="dark"] .feedback,
+html[data-theme="dark"] .unitProgress{
+  background:#111827;
+  color:var(--text);
+}
+html[data-theme="dark"] .btn.primary,
+html[data-theme="dark"] .btn.secondary,
+html[data-theme="dark"] .btn.success,
+html[data-theme="dark"] .btn.danger{
+  color:#020617;
+}
+html[data-theme="dark"] .btn.primary{background:var(--primary)}
+html[data-theme="dark"] .btn.secondary{background:var(--secondary)}
+html[data-theme="dark"] .btn.success{background:var(--success)}
+html[data-theme="dark"] .btn.danger{background:var(--danger)}
+html[data-theme="dark"] .option:hover{
+  background:#1F2937;
+}
+html[data-theme="dark"] .option.selected{
+  background:#1D4ED8;
+  color:#FFFFFF;
+}
+html[data-theme="dark"] .option.correct,
+html[data-theme="dark"] .feedback.good{
+  background:#14532D;
+  color:#F0FDF4;
+}
+html[data-theme="dark"] .option.wrong,
+html[data-theme="dark"] .feedback.bad{
+  background:#7F1D1D;
+  color:#FEF2F2;
+}
+html[data-theme="dark"] .chip.primary{background:#1E3A8A}
+html[data-theme="dark"] .chip.success{background:#14532D}
+html[data-theme="dark"] .chip.warning{background:#78350F;color:#FEF3C7}
+html[data-theme="dark"] .compactMastery{
+  background:
+    radial-gradient(circle at 2px 2px,rgba(248,250,252,.12) 1px,transparent 1px) 0 0/12px 12px,
+    #020617;
+}
+html[data-theme="dark"] .progress{
+  background:#1F2937;
+}
+html[data-theme="dark"] .unitProgress{
+  box-shadow:4px 4px 0 #F8FAFC;
+}
+html[data-theme="dark"] .statusPill{
+  background:#78350F;
+  color:#FEF3C7;
+}
+html[data-theme="dark"] .statusPill.mastered{
+  background:#14532D;
+  color:#DCFCE7;
+}
+html[data-theme="dark"] .miniStat{
+  background:#020617;
+  border-color:#334155;
+}
+html[data-theme="dark"] .drawerScrim{
+  background:rgba(0,0,0,.58);
+}
+html[data-theme="dark"] .toast{
+  background:#F8FAFC;
+  color:#020617;
+  box-shadow:5px 5px 0 var(--secondary);
+}
+html[data-theme="dark"] .subtitle,
+html[data-theme="dark"] .helpText{
+  color:var(--muted);
+}
+
+@media(max-width:780px){
+  .topbar{align-items:flex-start;flex-direction:column}
+  .topActions{width:100%;justify-content:flex-start}
+  .controls,.topicRow{grid-template-columns:1fr}
+  .practiceBody{padding:16px}
+  .compactMastery{grid-template-columns:1fr}
+  .drawerPanel{width:100vw}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>AP Micro Practice Arena</h1>
+        <p class="subtitle">Answer questions first. Check mastery only when you want.</p>
+      </div>
+    </div>
+    <div class="topActions">
+      <button class="btn secondary" id="openProgressBtn" aria-expanded="false" aria-controls="progressDrawer">Progress</button>
+      <button class="btn ghost" id="themeToggleBtn" aria-pressed="false">Dark mode</button>
+      <button class="btn ghost" id="resetAllBtn">Reset</button>
+    </div>
+  </header>
+
+  <main class="practiceCard" aria-label="Practice question area">
+    <section class="practiceTop">
+      <div class="controls">
+        <div class="controlGroup">
+          <label for="unitSelect">Unit</label>
+          <select id="unitSelect"></select>
+        </div>
+        <div class="controlGroup">
+          <label for="modeSelect">Practice mode</label>
+          <select id="modeSelect">
+            <option value="unit">Selected unit</option>
+            <option value="topic">Selected topic</option>
+            <option value="weak">Weakest unit</option>
+            <option value="all">All units mixed</option>
+          </select>
+        </div>
+      </div>
+      <div class="topicRow hidden" id="topicControl">
+        <div class="controlGroup">
+          <label for="topicSelect">Topic</label>
+          <select id="topicSelect"></select>
+        </div>
+        <div class="controlGroup">
+          <label for="orderSelect">Order</label>
+          <select id="orderSelect">
+            <option value="shuffle">Shuffle</option>
+            <option value="sequential">Sequential</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="practiceBody">
+      <div class="metaRow">
+        <span class="chip primary" id="activeUnitChip">Unit</span>
+        <span class="chip" id="topicChip">Topic</span>
+        <span class="chip warning" id="streakChip">Streak 0/5</span>
+      </div>
+
+      <h2 class="questionPrompt" id="questionText">Loading...</h2>
+      <div class="options" id="optionsBox"></div>
+      <div class="feedback" id="feedbackBox"></div>
+
+      <div class="actionRow">
+        <button class="btn primary" id="checkBtn">Check Answer</button>
+        <button class="btn" id="nextBtn">Next Question</button>
+        <button class="btn success" id="jumpWeakBtn">Practice Weakest Unit</button>
+      </div>
+
+      <div class="compactMastery" aria-label="Current unit mastery summary">
+        <div>
+          <div class="compactText" id="compactMasteryText">Mastery points: 0/10</div>
+          <div class="progress" aria-hidden="true"><div class="bar" id="compactMasteryBar"></div></div>
+        </div>
+        <span class="chip success" id="sessionChip">0 correct / 0 answered</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<aside class="progressDrawer" id="progressDrawer" aria-hidden="true">
+  <div class="drawerScrim" id="drawerScrim"></div>
+  <section class="drawerPanel" role="dialog" aria-modal="true" aria-labelledby="progressTitle">
+    <header class="drawerHeader">
+      <div>
+        <h2 id="progressTitle">Mastery Progress</h2>
+        <p class="subtitle">5-correct streak = 1 point. 10 points = unit mastered.</p>
+      </div>
+      <button class="btn" id="closeProgressBtn">Close</button>
+    </header>
+    <div class="drawerBody">
+      <p class="helpText">Progress is saved locally in this browser. Students can open this drawer when they want to check status.</p>
+      <div class="unitProgressList" id="unitProgressList"></div>
+      <div class="actionRow">
+        <button class="btn danger" id="resetUnitBtn">Reset Current Unit</button>
+      </div>
+    </div>
+  </section>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const banks = {"unit1":{"title":"Unit 1: Basic Economic Concepts","topics":{"scarcity":"1.1 Scarcity and Opportunity Cost","systems":"1.2 Resource Allocation and Economic Systems","ppc":"1.3 Production Possibilities Curve","trade":"1.4 Comparative Advantage and Trade","costbenefit":"1.5 Cost-Benefit Analysis","marginal":"1.6 Marginal Analysis and Consumer Choice"},"questions":[{"topic":"scarcity","q":"Scarcity exists because","options":["human wants exceed available resources","prices are always too high","governments limit production","money is the only resource","markets cannot allocate resources"],"ans":0,"exp":"Scarcity means limited resources must be allocated among competing wants.","unit":"unit1"},{"topic":"scarcity","q":"The opportunity cost of a choice is","options":["the value of the next-best alternative given up","the money price only","the total value of all alternatives","always zero if there is no price","the benefit of the chosen option"],"ans":0,"exp":"Opportunity cost is the next-best alternative sacrificed.","unit":"unit1"},{"topic":"scarcity","q":"A student gives up a $20 tutoring job to study for economics. The $20 is part of the student's","options":["opportunity cost","consumer surplus","producer surplus","fixed cost","comparative advantage"],"ans":0,"exp":"The foregone wage is an opportunity cost.","unit":"unit1"},{"topic":"scarcity","q":"Which is an example of human capital?","options":["A worker's education and skills","A factory building","A river","A delivery truck","A bank loan"],"ans":0,"exp":"Human capital refers to knowledge, education, training, and skills.","unit":"unit1"},{"topic":"scarcity","q":"A trade-off occurs when","options":["choosing more of one thing requires giving up something else","resources are unlimited","prices are zero","opportunity cost disappears","everyone receives the same income"],"ans":0,"exp":"Trade-offs occur because resources are scarce.","unit":"unit1"},{"topic":"scarcity","q":"Economics mainly studies how people","options":["allocate scarce resources","eliminate all costs","make wants limited","avoid choices","guarantee equal outcomes"],"ans":0,"exp":"Economics is about choice under scarcity.","unit":"unit1"},{"topic":"systems","q":"A market economy mainly allocates resources through","options":["prices and voluntary exchange","central commands only","random assignment","tradition only","equal shares only"],"ans":0,"exp":"Prices coordinate decisions in market economies.","unit":"unit1"},{"topic":"systems","q":"The three basic economic questions include what to produce, how to produce, and","options":["for whom to produce","how to eliminate scarcity","how to make prices zero","how to avoid specialization","how to prevent trade"],"ans":0,"exp":"Economies must decide what, how, and for whom.","unit":"unit1"},{"topic":"systems","q":"A command economy relies most heavily on","options":["central planning","private price signals only","free entry and exit","consumer sovereignty only","international trade only"],"ans":0,"exp":"Command systems allocate resources by central authority.","unit":"unit1"},{"topic":"systems","q":"A mixed economy includes","options":["both markets and government intervention","only tradition","only central planning","no private ownership","no opportunity cost"],"ans":0,"exp":"Most economies combine market forces and government roles.","unit":"unit1"},{"topic":"systems","q":"A rise in a good's price can signal","options":["greater relative scarcity or stronger demand","that scarcity has disappeared","that quantity demanded must rise","that opportunity cost is zero","that supply must fall in every case"],"ans":0,"exp":"Prices communicate scarcity and incentives.","unit":"unit1"},{"topic":"systems","q":"One reason governments intervene in markets is to","options":["address market failures or equity concerns","eliminate all trade-offs","make all resources unlimited","remove incentives","prevent all specialization"],"ans":0,"exp":"Government may intervene for efficiency or equity reasons.","unit":"unit1"},{"topic":"ppc","q":"A point inside a PPC represents","options":["inefficient use of resources","unattainable production","maximum efficient production","economic growth","constant opportunity cost only"],"ans":0,"exp":"Inside the PPC means resources are underused or inefficiently used.","unit":"unit1"},{"topic":"ppc","q":"A point outside a PPC is","options":["unattainable with current resources and technology","always inefficient but possible","evidence of unemployment","a market equilibrium","zero opportunity cost"],"ans":0,"exp":"Outside the PPC is not currently attainable.","unit":"unit1"},{"topic":"ppc","q":"A bowed-out PPC shows","options":["increasing opportunity cost","constant opportunity cost","zero opportunity cost","no scarcity","perfect equality"],"ans":0,"exp":"A bowed-out PPC reflects resources not equally suited for all goods.","unit":"unit1"},{"topic":"ppc","q":"Economic growth is shown by","options":["an outward shift of the PPC","a movement inside the PPC","a movement from the curve to an interior point","a lower maximum output","a flatter demand curve"],"ans":0,"exp":"Growth expands production possibilities.","unit":"unit1"},{"topic":"ppc","q":"The slope of the PPC measures","options":["opportunity cost","total revenue","consumer surplus","absolute advantage","income inequality"],"ans":0,"exp":"The slope shows what must be given up to get more of another good.","unit":"unit1"},{"topic":"ppc","q":"A straight-line PPC indicates","options":["constant opportunity cost","increasing opportunity cost","economic growth","unemployment","scarcity is gone"],"ans":0,"exp":"A linear PPC has a constant opportunity cost.","unit":"unit1"},{"topic":"trade","q":"Comparative advantage is based on","options":["lower opportunity cost","higher absolute output only","larger population","higher income","more natural resources only"],"ans":0,"exp":"Comparative advantage means lower opportunity cost.","unit":"unit1"},{"topic":"trade","q":"Absolute advantage means a producer can","options":["produce more with the same resources","produce at lower opportunity cost","avoid scarcity","trade without cost","consume without producing"],"ans":0,"exp":"Absolute advantage compares productivity.","unit":"unit1"},{"topic":"trade","q":"Mutually beneficial trade requires different","options":["opportunity costs","currency names","population sizes only","fixed costs only","government systems only"],"ans":0,"exp":"Different opportunity costs create gains from trade.","unit":"unit1"},{"topic":"trade","q":"A country should specialize in the good for which it has","options":["comparative advantage","higher opportunity cost","absolute advantage in every case","no demand","the highest money price"],"ans":0,"exp":"Specialization should follow comparative advantage.","unit":"unit1"},{"topic":"trade","q":"A mutually beneficial terms of trade lies","options":["between the two opportunity costs","above both opportunity costs only","below both opportunity costs only","at zero","outside both PPCs"],"ans":0,"exp":"The trading price must benefit both sides.","unit":"unit1"},{"topic":"trade","q":"Specialization and trade can allow consumption","options":["beyond an individual's or country's PPC","inside the PPC only","with no opportunity cost","without scarcity","without production"],"ans":0,"exp":"Trade expands consumption possibilities.","unit":"unit1"},{"topic":"costbenefit","q":"Cost-benefit analysis compares","options":["benefits and costs of a choice","only fixed cost and total cost","only accounting profit","average product and marginal product","income and wealth"],"ans":0,"exp":"Cost-benefit analysis weighs benefits against costs.","unit":"unit1"},{"topic":"costbenefit","q":"A project should be chosen if","options":["benefits exceed costs","costs exceed benefits","sunk costs are high","marginal benefit is zero","opportunity cost is ignored"],"ans":0,"exp":"Positive net benefit makes a project worthwhile.","unit":"unit1"},{"topic":"costbenefit","q":"Sunk costs should generally be","options":["ignored in current decisions","counted as marginal costs","maximized","treated as future benefits","used to measure comparative advantage"],"ans":0,"exp":"Sunk costs cannot be recovered.","unit":"unit1"},{"topic":"costbenefit","q":"If marginal benefit is less than marginal cost, a rational person should","options":["do less of the activity","do more of the activity","continue automatically","ignore costs","maximize total activity"],"ans":0,"exp":"MB < MC means the extra unit reduces net benefit.","unit":"unit1"},{"topic":"costbenefit","q":"The optimal amount of an activity occurs where","options":["marginal benefit equals marginal cost","total cost is maximized","total benefit equals zero","marginal cost is zero always","average benefit is minimized"],"ans":0,"exp":"The marginal rule determines the optimum.","unit":"unit1"},{"topic":"costbenefit","q":"Opportunity costs should be included because","options":["they are real costs of choosing one option over another","they are always zero","they are the same as sunk costs","they are only money payments","they do not affect decisions"],"ans":0,"exp":"Opportunity cost is the value of what is given up.","unit":"unit1"},{"topic":"marginal","q":"Marginal analysis focuses on","options":["additional benefits and additional costs","only total cost","only fixed cost","past sunk costs","average product only"],"ans":0,"exp":"Marginal means additional or incremental.","unit":"unit1"},{"topic":"marginal","q":"The law of diminishing marginal utility says that as consumption rises, marginal utility tends to","options":["decrease","increase forever","stay constant always","equal price","equal total utility"],"ans":0,"exp":"Additional units usually add less extra satisfaction.","unit":"unit1"},{"topic":"marginal","q":"A consumer maximizes utility when the last dollar spent on each good gives","options":["equal marginal utility per dollar","equal total utility","equal prices only","zero marginal utility for all goods","maximum total spending"],"ans":0,"exp":"Utility maximization uses MU per dollar.","unit":"unit1"},{"topic":"marginal","q":"If MUx/Px is greater than MUy/Py, a consumer should buy","options":["more X and less Y","more Y and less X","less of both","more of both always","only Y"],"ans":0,"exp":"X gives more utility per dollar.","unit":"unit1"},{"topic":"marginal","q":"Total utility rises as long as marginal utility is","options":["positive","negative","zero","less than price","equal to income"],"ans":0,"exp":"Positive MU adds to total utility.","unit":"unit1"},{"topic":"marginal","q":"A rational consumer buys another unit if","options":["marginal benefit is at least marginal cost","marginal cost exceeds marginal benefit","sunk cost is high","total utility is zero","price is above willingness to pay"],"ans":0,"exp":"Buy another unit when MB ≥ MC.","unit":"unit1"}]},"unit2":{"title":"Unit 2: Supply and Demand","topics":{"demand":"2.1 Demand","supply":"2.2 Supply","ped":"2.3 Price Elasticity of Demand","pes":"2.4 Price Elasticity of Supply","otherelasticities":"2.5 Other Elasticities","surplus":"2.6 Market Equilibrium and Consumer and Producer Surplus","disequilibrium":"2.7 Market Disequilibrium and Changes in Equilibrium","government":"2.8 The Effects of Government Intervention in Markets","tradepolicy":"2.9 International Trade and Public Policy"},"questions":[{"topic":"demand","q":"Which statement best describes the law of demand?","options":["When price rises, demand decreases.","When price rises, quantity demanded decreases, ceteris paribus.","When income rises, quantity demanded decreases.","When supply rises, demand rises.","When demand rises, price must fall."],"ans":1,"exp":"The law of demand describes an inverse relationship between price and quantity demanded, not a shift of demand.","unit":"unit2"},{"topic":"demand","q":"If the price of movie tickets decreases, what happens in the market for movie tickets, all else equal?","options":["Demand shifts right.","Demand shifts left.","Quantity demanded increases.","Quantity demanded decreases.","Supply shifts right."],"ans":2,"exp":"A change in the good’s own price causes movement along the demand curve.","unit":"unit2"},{"topic":"demand","q":"Coffee and tea are substitutes. If the price of coffee increases, what happens to demand for tea?","options":["Demand for tea increases.","Demand for tea decreases.","Quantity demanded of tea decreases.","Supply of tea increases.","Demand for coffee increases."],"ans":0,"exp":"When a substitute becomes more expensive, demand for the other substitute increases.","unit":"unit2"},{"topic":"demand","q":"Printers and ink cartridges are complements. If the price of printers decreases, what happens to demand for ink cartridges?","options":["It decreases.","It increases.","It becomes perfectly elastic.","It does not change because printers and ink are different goods.","Supply of ink cartridges decreases."],"ans":1,"exp":"A lower price of a complementary good increases demand for the related good.","unit":"unit2"},{"topic":"demand","q":"If ramen is an inferior good, an increase in consumer income will most likely cause","options":["a rightward shift of the demand curve for ramen.","a leftward shift of the demand curve for ramen.","an upward movement along the demand curve for ramen.","a downward movement along the demand curve for ramen.","an increase in supply of ramen."],"ans":1,"exp":"For inferior goods, higher income reduces demand.","unit":"unit2"},{"topic":"demand","q":"Which of the following would increase the demand for electric cars?","options":["A decrease in the price of electric cars","An increase in the price of gasoline-powered cars","A decrease in consumer preference for electric cars","A decrease in the number of buyers","A decrease in consumer income if electric cars are normal goods"],"ans":1,"exp":"Gasoline-powered cars and electric cars are substitutes; a higher price of the substitute increases demand for electric cars.","unit":"unit2"},{"topic":"demand","q":"A change in consumer tastes in favor of a good will cause","options":["a movement down along the demand curve.","a movement up along the demand curve.","the demand curve to shift right.","the supply curve to shift right.","the supply curve to shift left."],"ans":2,"exp":"Tastes and preferences are demand shifters.","unit":"unit2"},{"topic":"demand","q":"Market demand is found by","options":["adding quantities demanded by all consumers at each price.","adding prices each consumer is willing to pay at each quantity only.","averaging consumer incomes.","subtracting supply from demand.","multiplying price by total quantity supplied."],"ans":0,"exp":"Market demand is the horizontal sum of individual demand curves.","unit":"unit2"},{"topic":"supply","q":"Which statement best describes the law of supply?","options":["At higher prices, producers are willing to sell more.","At higher prices, consumers are willing to buy more.","At lower prices, supply shifts right.","At lower input costs, quantity supplied decreases.","At higher income, supply increases."],"ans":0,"exp":"The law of supply describes the direct relationship between price and quantity supplied.","unit":"unit2"},{"topic":"supply","q":"If the price of a good increases, all else equal, producers will","options":["supply less of the good.","increase quantity supplied.","shift the supply curve right.","shift the supply curve left.","decrease demand."],"ans":1,"exp":"Own-price changes cause movement along the supply curve.","unit":"unit2"},{"topic":"supply","q":"A decrease in the wage paid to workers who produce shoes will most likely","options":["decrease supply of shoes.","increase supply of shoes.","increase demand for shoes.","decrease quantity supplied of shoes.","increase the price of shoes at every quantity supplied."],"ans":1,"exp":"Lower input costs shift supply right.","unit":"unit2"},{"topic":"supply","q":"Which event would shift the supply curve for smartphones to the right?","options":["An increase in consumer income","An increase in the price of smartphones","An improvement in production technology","An increase in wages of smartphone workers","A decrease in the number of sellers"],"ans":2,"exp":"Better technology lowers production cost and increases supply.","unit":"unit2"},{"topic":"supply","q":"A per-unit tax on sellers usually causes","options":["supply to shift right.","supply to shift left.","demand to shift right.","demand to shift left.","quantity demanded to increase at every price."],"ans":1,"exp":"A tax raises production cost and shifts supply left/up.","unit":"unit2"},{"topic":"supply","q":"Which of the following changes would decrease supply?","options":["A decrease in input prices","An increase in the number of sellers","An improvement in productivity","A subsidy to producers","An increase in the price of a key input"],"ans":4,"exp":"Higher input prices raise costs and decrease supply.","unit":"unit2"},{"topic":"supply","q":"If producers expect the future price of a product to rise, current supply may","options":["increase because producers want to sell now.","decrease because producers may hold inventory for later sale.","not change because expectations affect only demand.","cause demand to shift left.","cause quantity demanded to rise."],"ans":1,"exp":"Producers may withhold current supply if they expect a higher future price.","unit":"unit2"},{"topic":"supply","q":"A subsidy to producers will most likely","options":["decrease supply.","increase supply.","decrease demand.","increase quantity demanded without shifting curves.","create a movement up along supply only."],"ans":1,"exp":"A subsidy lowers effective production cost and increases supply.","unit":"unit2"},{"topic":"ped","q":"If price rises by 10% and quantity demanded falls by 25%, demand is","options":["price elastic.","price inelastic.","unit elastic.","perfectly inelastic.","perfectly elastic."],"ans":0,"exp":"The percentage change in quantity demanded is larger than the percentage change in price.","unit":"unit2"},{"topic":"ped","q":"If demand is price inelastic and price increases, total revenue will","options":["increase.","decrease.","remain unchanged.","become negative.","fall to zero."],"ans":0,"exp":"With inelastic demand, price and total revenue move in the same direction.","unit":"unit2"},{"topic":"ped","q":"If demand is price elastic and price decreases, total revenue will","options":["increase.","decrease.","remain unchanged.","be indeterminate.","fall because quantity demanded falls."],"ans":0,"exp":"With elastic demand, price and total revenue move in opposite directions.","unit":"unit2"},{"topic":"ped","q":"If total revenue is unchanged after a price change, demand over that range is","options":["elastic.","inelastic.","unit elastic.","perfectly inelastic.","unrelated to price."],"ans":2,"exp":"Unit elastic demand means total revenue remains unchanged when price changes.","unit":"unit2"},{"topic":"ped","q":"Which factor tends to make demand more price elastic?","options":["Few available substitutes","A very short time period","The good is a necessity","Many close substitutes","The good takes a small share of the consumer’s budget"],"ans":3,"exp":"More substitutes make consumers more responsive to price changes.","unit":"unit2"},{"topic":"ped","q":"The demand for emergency medication is likely to be relatively","options":["elastic because it has many substitutes.","inelastic because it is a necessity.","unit elastic because all medical goods are unit elastic.","perfectly elastic because consumers choose the price.","elastic because it is expensive."],"ans":1,"exp":"Necessities with few substitutes tend to have inelastic demand.","unit":"unit2"},{"topic":"ped","q":"A perfectly inelastic demand curve is","options":["horizontal.","vertical.","upward sloping.","bowed outward.","the same as the supply curve."],"ans":1,"exp":"Perfectly inelastic demand means quantity demanded does not respond to price.","unit":"unit2"},{"topic":"ped","q":"Which statement is true about a straight-line downward-sloping demand curve?","options":["Elasticity is constant at all points.","Elasticity varies along the curve.","It is always perfectly elastic.","It is always perfectly inelastic.","It has no relation to total revenue."],"ans":1,"exp":"A straight demand curve has constant slope but changing elasticity.","unit":"unit2"},{"topic":"pes","q":"If a small increase in price causes a large increase in quantity supplied, supply is","options":["price elastic.","price inelastic.","perfectly inelastic.","unit elastic only if price doubles.","unrelated to cost."],"ans":0,"exp":"Supply is elastic when quantity supplied is highly responsive to price.","unit":"unit2"},{"topic":"pes","q":"Supply is usually more elastic when producers","options":["cannot store output.","need many years to expand production.","can easily adjust production levels.","face fixed capacity and no spare inputs.","must use rare specialized resources."],"ans":2,"exp":"Easy production adjustment increases price elasticity of supply.","unit":"unit2"},{"topic":"pes","q":"A vertical supply curve means supply is","options":["perfectly elastic.","perfectly inelastic.","unit elastic.","negatively sloped.","more elastic than demand."],"ans":1,"exp":"A vertical supply curve means quantity supplied does not respond to price.","unit":"unit2"},{"topic":"pes","q":"If quantity supplied increases by 5% when price rises by 20%, supply is","options":["elastic.","inelastic.","unit elastic.","perfectly elastic.","perfectly inelastic."],"ans":1,"exp":"Es = 5%/20% = 0.25, which is inelastic.","unit":"unit2"},{"topic":"pes","q":"Which good is likely to have the least elastic short-run supply?","options":["Freshly baked cookies","Digital downloads","Custom-built houses","T-shirts from existing inventory","Bottled water from existing stock"],"ans":2,"exp":"Custom-built houses take time to construct, making short-run supply relatively inelastic.","unit":"unit2"},{"topic":"pes","q":"The price elasticity of supply is calculated as","options":["% change in quantity supplied divided by % change in price.","% change in quantity demanded divided by % change in price.","% change in income divided by % change in quantity demanded.","price divided by quantity supplied.","quantity supplied divided by quantity demanded."],"ans":0,"exp":"PES measures responsiveness of quantity supplied to price.","unit":"unit2"},{"topic":"pes","q":"If the supply of beachfront land is fixed, its supply curve is likely","options":["horizontal.","vertical.","downward sloping.","perfectly elastic.","unit elastic."],"ans":1,"exp":"Fixed quantity means perfectly inelastic supply.","unit":"unit2"},{"topic":"pes","q":"Over a longer time period, supply tends to become","options":["more elastic because firms can adjust inputs and capacity.","less elastic because firms forget how to produce.","perfectly inelastic for all goods.","unrelated to price.","more inelastic because demand changes."],"ans":0,"exp":"Time allows producers to respond more fully.","unit":"unit2"},{"topic":"otherelasticities","q":"If income rises by 10% and quantity demanded of good X rises by 15%, good X is","options":["normal.","inferior.","a complement.","a substitute.","perfectly inelastic."],"ans":0,"exp":"Positive income elasticity indicates a normal good.","unit":"unit2"},{"topic":"otherelasticities","q":"If income rises and demand for bus rides falls, bus rides are most likely","options":["normal goods.","inferior goods.","substitute goods.","complementary goods.","public goods."],"ans":1,"exp":"Income increases reducing demand indicates an inferior good.","unit":"unit2"},{"topic":"otherelasticities","q":"If the price of good A rises and demand for good B rises, cross-price elasticity between A and B is","options":["positive; the goods are substitutes.","negative; the goods are substitutes.","positive; the goods are complements.","negative; the goods are complements.","zero; the goods are unrelated."],"ans":0,"exp":"A higher price of one good increasing demand for another means substitutes; cross-price elasticity is positive.","unit":"unit2"},{"topic":"otherelasticities","q":"If the price of good A rises and demand for good B falls, A and B are likely","options":["substitutes.","complements.","both inferior goods.","both normal goods.","unrelated goods."],"ans":1,"exp":"When a higher price of one good reduces demand for the other, the goods are complements.","unit":"unit2"},{"topic":"otherelasticities","q":"Cross-price elasticity of demand is calculated as","options":["% change in quantity demanded of one good divided by % change in price of another good.","% change in quantity supplied divided by % change in price.","% change in income divided by % change in quantity demanded.","price divided by income.","quantity supplied divided by quantity demanded."],"ans":0,"exp":"Cross-price elasticity measures how demand for one good responds to the price of another.","unit":"unit2"},{"topic":"otherelasticities","q":"If cross-price elasticity between two goods is close to zero, the goods are most likely","options":["strong substitutes.","strong complements.","unrelated.","both inferior.","both luxury goods."],"ans":2,"exp":"A value near zero means demand for one good barely responds to the other good’s price.","unit":"unit2"},{"topic":"otherelasticities","q":"If income elasticity is -0.8, the good is","options":["normal.","inferior.","a substitute.","a complement.","perfectly elastic."],"ans":1,"exp":"Negative income elasticity indicates an inferior good.","unit":"unit2"},{"topic":"otherelasticities","q":"Which pair is most likely to have positive cross-price elasticity?","options":["Hot dogs and hot dog buns","Cars and gasoline","Butter and margarine","Printers and ink cartridges","Left shoes and right shoes"],"ans":2,"exp":"Butter and margarine are substitutes, so their cross-price elasticity is positive.","unit":"unit2"},{"topic":"surplus","q":"Consumer surplus is the area","options":["below the supply curve and above the price.","below the demand curve and above the price.","above the demand curve and below the price.","between tax revenue and deadweight loss.","below both demand and supply."],"ans":1,"exp":"Consumer surplus is willingness to pay minus price paid.","unit":"unit2"},{"topic":"surplus","q":"Producer surplus is the area","options":["below demand and above price.","above supply and below price.","below supply and above price.","above demand and below supply.","equal to consumer surplus in every market."],"ans":1,"exp":"Producer surplus is price received minus minimum acceptable price, represented above supply and below price.","unit":"unit2"},{"topic":"surplus","q":"Competitive market equilibrium is efficient because","options":["consumer surplus is always zero.","producer surplus is always zero.","total surplus is maximized, assuming no market failure.","quantity demanded is always greater than quantity supplied.","the government sets the price."],"ans":2,"exp":"In a competitive market without market failures, equilibrium maximizes total surplus.","unit":"unit2"},{"topic":"surplus","q":"At equilibrium in a competitive market,","options":["quantity demanded equals quantity supplied.","quantity demanded exceeds quantity supplied.","quantity supplied exceeds quantity demanded.","demand equals zero.","supply equals zero."],"ans":0,"exp":"Equilibrium occurs where Qd = Qs.","unit":"unit2"},{"topic":"surplus","q":"If a buyer is willing to pay $50 but pays $35, that buyer’s consumer surplus is","options":["$15.","$35.","$50.","$85.","$0."],"ans":0,"exp":"Consumer surplus equals willingness to pay minus price paid: $50 − $35 = $15.","unit":"unit2"},{"topic":"surplus","q":"If a seller is willing to accept $20 but receives $32, that seller’s producer surplus is","options":["$12.","$20.","$32.","$52.","$0."],"ans":0,"exp":"Producer surplus equals price received minus minimum acceptable price: $32 − $20 = $12.","unit":"unit2"},{"topic":"surplus","q":"Total surplus is","options":["consumer surplus plus producer surplus.","consumer surplus minus producer surplus.","producer surplus minus tax revenue.","deadweight loss plus shortage.","total revenue minus total cost only."],"ans":0,"exp":"Total surplus is the sum of consumer surplus and producer surplus.","unit":"unit2"},{"topic":"surplus","q":"A market transaction creates gains from trade when","options":["the buyer’s willingness to pay exceeds the seller’s minimum acceptable price.","the seller’s minimum acceptable price exceeds the buyer’s willingness to pay.","the price is above every buyer’s willingness to pay.","the price is below every seller’s cost.","quantity supplied is zero."],"ans":0,"exp":"Mutually beneficial exchange occurs when willingness to pay exceeds cost.","unit":"unit2"},{"topic":"disequilibrium","q":"A shortage occurs when","options":["quantity supplied exceeds quantity demanded.","quantity demanded exceeds quantity supplied.","supply decreases at every price.","demand decreases at every price.","equilibrium quantity is zero."],"ans":1,"exp":"A shortage means Qd > Qs at the current price.","unit":"unit2"},{"topic":"disequilibrium","q":"A surplus occurs when","options":["quantity demanded exceeds quantity supplied.","quantity supplied exceeds quantity demanded.","demand shifts right.","supply shifts left.","price is below equilibrium."],"ans":1,"exp":"A surplus means Qs > Qd at the current price.","unit":"unit2"},{"topic":"disequilibrium","q":"If a market price is below equilibrium, there will be","options":["a surplus, causing price to rise.","a shortage, causing price to rise.","a shortage, causing price to fall.","a surplus, causing price to fall.","no pressure on price."],"ans":1,"exp":"Below equilibrium, Qd exceeds Qs, creating upward pressure on price.","unit":"unit2"},{"topic":"disequilibrium","q":"If demand increases and supply is unchanged, equilibrium price and quantity will","options":["increase and increase.","increase and decrease.","decrease and increase.","decrease and decrease.","be indeterminate and increase."],"ans":0,"exp":"Demand shifting right increases both equilibrium price and quantity.","unit":"unit2"},{"topic":"disequilibrium","q":"If supply increases and demand is unchanged, equilibrium price and quantity will","options":["increase and increase.","increase and decrease.","decrease and increase.","decrease and decrease.","be indeterminate and decrease."],"ans":2,"exp":"Supply shifting right lowers price and raises quantity.","unit":"unit2"},{"topic":"disequilibrium","q":"If demand decreases and supply decreases at the same time, what is the likely result?","options":["Price definitely rises; quantity definitely rises.","Price definitely falls; quantity definitely rises.","Price is indeterminate; quantity decreases.","Price is indeterminate; quantity increases.","Price and quantity both definitely increase."],"ans":2,"exp":"Both shifts decrease equilibrium quantity, but price depends on which shift is larger.","unit":"unit2"},{"topic":"disequilibrium","q":"If demand increases and supply decreases at the same time, what must happen to equilibrium price?","options":["It increases.","It decreases.","It remains unchanged.","It is indeterminate.","It falls to zero."],"ans":0,"exp":"Demand right raises price and supply left raises price, so price definitely increases.","unit":"unit2"},{"topic":"disequilibrium","q":"A successful advertising campaign combined with a higher input price will definitely cause","options":["equilibrium price to rise.","equilibrium price to fall.","equilibrium quantity to rise.","equilibrium quantity to fall.","both price and quantity to be indeterminate."],"ans":0,"exp":"Demand increases and supply decreases; both raise equilibrium price.","unit":"unit2"},{"topic":"government","q":"A binding price ceiling is set","options":["above equilibrium price and creates a surplus.","below equilibrium price and creates a shortage.","below equilibrium price and creates a surplus.","above equilibrium price and creates a shortage.","at equilibrium and creates deadweight loss."],"ans":1,"exp":"A ceiling below equilibrium prevents price from rising and creates a shortage.","unit":"unit2"},{"topic":"government","q":"A binding price floor is set","options":["above equilibrium price and creates a surplus.","below equilibrium price and creates a shortage.","below equilibrium price and creates a surplus.","at zero and creates a shortage.","below equilibrium and increases quantity sold."],"ans":0,"exp":"A floor above equilibrium prevents price from falling and creates a surplus.","unit":"unit2"},{"topic":"government","q":"A minimum wage above equilibrium in a competitive labor market will tend to","options":["increase employment and reduce unemployment.","decrease employment and create unemployment.","decrease the wage and increase employment.","have no effect if workers prefer higher wages.","increase labor demand."],"ans":1,"exp":"A binding minimum wage creates a surplus of labor: unemployment.","unit":"unit2"},{"topic":"government","q":"A per-unit tax on sellers shifts","options":["demand left by the tax amount.","demand right by the tax amount.","supply left/up by the tax amount.","supply right/down by the tax amount.","both supply and demand right."],"ans":2,"exp":"A seller tax raises marginal cost and shifts supply upward by the tax.","unit":"unit2"},{"topic":"government","q":"The burden of a tax falls more heavily on the side of the market that is more","options":["elastic.","inelastic.","horizontal.","responsive to price.","likely to shift demand."],"ans":1,"exp":"The less elastic side is less able to avoid the tax and bears more burden.","unit":"unit2"},{"topic":"government","q":"A nonbinding price ceiling will","options":["create a shortage.","create a surplus.","have no effect on market price or quantity.","shift demand right.","shift supply left."],"ans":2,"exp":"A ceiling above equilibrium is not binding.","unit":"unit2"},{"topic":"government","q":"Deadweight loss from a tax occurs because","options":["the tax prevents some mutually beneficial trades.","the tax makes demand perfectly elastic.","the tax eliminates scarcity.","the tax increases consumer surplus for all buyers.","the tax always increases total surplus."],"ans":0,"exp":"Taxes reduce the quantity exchanged below the efficient level.","unit":"unit2"},{"topic":"government","q":"If demand is perfectly inelastic and a per-unit tax is placed on sellers, the tax burden is paid mostly by","options":["buyers.","sellers.","the government.","foreign producers only.","neither side."],"ans":0,"exp":"With perfectly inelastic demand, consumers bear the tax through a higher price.","unit":"unit2"},{"topic":"tradepolicy","q":"If the world price of a good is below the domestic equilibrium price, the country will most likely","options":["import the good.","export the good.","ban all trade automatically.","produce exactly the same domestic quantity as before trade.","experience no change in consumer surplus."],"ans":0,"exp":"A world price below the domestic price makes foreign goods cheaper, leading to imports.","unit":"unit2"},{"topic":"tradepolicy","q":"If the world price of a good is above the domestic equilibrium price, the country will most likely","options":["import the good.","export the good.","set a binding price ceiling.","experience no domestic production.","have zero producer surplus."],"ans":1,"exp":"A world price above domestic equilibrium gives domestic producers an incentive to export.","unit":"unit2"},{"topic":"tradepolicy","q":"In an importing market, free trade usually causes domestic consumer surplus to","options":["increase.","decrease.","become zero.","equal producer surplus.","fall only if demand is perfectly inelastic."],"ans":0,"exp":"Imports at a lower world price lower the price paid by domestic consumers.","unit":"unit2"},{"topic":"tradepolicy","q":"In an importing market, free trade usually causes domestic producer surplus to","options":["increase.","decrease.","become larger than consumer surplus in every case.","remain unchanged.","equal tariff revenue."],"ans":1,"exp":"A lower world price reduces the price received by domestic producers.","unit":"unit2"},{"topic":"tradepolicy","q":"A tariff on imports will most likely","options":["lower the domestic price and increase imports.","raise the domestic price and reduce imports.","eliminate all deadweight loss.","increase consumer surplus.","remove government revenue."],"ans":1,"exp":"A tariff raises the domestic price of the imported good and reduces the quantity imported.","unit":"unit2"},{"topic":"tradepolicy","q":"A tariff creates government revenue equal to","options":["tariff per unit multiplied by quantity imported.","world price multiplied by domestic quantity demanded.","consumer surplus minus producer surplus.","deadweight loss multiplied by tax rate.","domestic price multiplied by exports only."],"ans":0,"exp":"Tariff revenue equals tariff amount per unit times the number of imported units.","unit":"unit2"},{"topic":"tradepolicy","q":"A quota differs from a tariff because a quota directly limits","options":["the physical quantity imported.","the price consumers pay.","the number of domestic consumers.","the supply of domestic labor.","the demand for all substitutes."],"ans":0,"exp":"An import quota is a quantity restriction.","unit":"unit2"},{"topic":"tradepolicy","q":"Which group is most likely to favor a tariff on an imported good?","options":["Domestic consumers of the good","Foreign producers only","Domestic producers competing with imports","All consumers equally","The government only if imports are zero"],"ans":2,"exp":"Domestic producers benefit from higher domestic prices and reduced foreign competition.","unit":"unit2"}]},"unit3":{"title":"Unit 3: Production, Cost, and Perfect Competition","topics":{"production":"3.1 The Production Function","sr_costs":"3.2 Short-Run Production Costs","lr_costs":"3.3 Long-Run Production Costs","profit_types":"3.4 Types of Profit","profit_max":"3.5 Profit Maximization","firm_decisions":"3.6 Firm’s Short-Run and Long-Run Decisions","perfect_comp":"3.7 Perfect Competition"},"questions":[{"topic":"production","q":"A firm hires one more worker and total output rises from 48 units to 57 units. What is the marginal product of the additional worker?","options":["6 units","9 units","48 units","57 units","105 units"],"ans":1,"exp":"Marginal product is the change in total product: 57 − 48 = 9 units.","unit":"unit3"},{"topic":"production","q":"If total product is increasing at a decreasing rate as more labor is hired, the firm is experiencing","options":["economies of scale.","diminishing marginal returns.","constant returns to scale.","negative total product.","increasing average fixed cost."],"ans":1,"exp":"Diminishing marginal returns occur when each additional unit of variable input adds less extra output.","unit":"unit3"},{"topic":"production","q":"Which statement about marginal product and total product is correct?","options":["If marginal product is positive, total product increases.","If marginal product is positive, total product decreases.","If marginal product decreases, total product must decrease immediately.","If total product increases, marginal product must be negative.","If average product rises, marginal product must be zero."],"ans":0,"exp":"Positive marginal product means the additional input adds output, so total product increases.","unit":"unit3"},{"topic":"production","q":"Average product of labor is calculated as","options":["total product divided by units of labor.","marginal product divided by wage.","total cost divided by output.","total product minus marginal product.","change in total product divided by change in cost."],"ans":0,"exp":"Average product equals total product divided by the amount of input used.","unit":"unit3"},{"topic":"production","q":"In the short run, a firm has","options":["no fixed inputs.","at least one fixed input.","all inputs variable.","no variable costs.","no marginal product."],"ans":1,"exp":"The short run is a period in which at least one input is fixed.","unit":"unit3"},{"topic":"production","q":"If marginal product is greater than average product, then average product is","options":["rising.","falling.","zero.","negative.","unrelated to marginal product."],"ans":0,"exp":"When marginal is above average, it pulls the average up.","unit":"unit3"},{"topic":"production","q":"When marginal product first begins to fall, the firm has reached the point of","options":["diminishing marginal returns.","economies of scale.","shutdown.","long-run equilibrium.","zero economic profit."],"ans":0,"exp":"Diminishing marginal returns begin when marginal product starts declining.","unit":"unit3"},{"topic":"production","q":"If total product falls when another worker is hired, marginal product of that worker is","options":["positive.","zero.","negative.","equal to average product.","equal to total product."],"ans":2,"exp":"If total output decreases, the change in output from the additional worker is negative.","unit":"unit3"},{"topic":"production","q":"A firm’s total product rises from 0 to 10 to 18 to 24 as it hires the first three workers. The marginal product of the third worker is","options":["6","8","10","18","24"],"ans":0,"exp":"The third worker adds 24 − 18 = 6 units.","unit":"unit3"},{"topic":"production","q":"Which of the following best illustrates the law of diminishing marginal returns?","options":["Doubling all inputs doubles output.","Adding more workers to a fixed kitchen eventually adds fewer extra meals.","A firm earns zero economic profit in the long run.","A tax raises marginal cost.","A firm shuts down when price is below average variable cost."],"ans":1,"exp":"Diminishing marginal returns occurs when more variable input is added to a fixed input.","unit":"unit3"},{"topic":"production","q":"If the marginal product of labor is rising, total product is","options":["increasing at an increasing rate.","increasing at a decreasing rate.","decreasing at an increasing rate.","constant.","negative."],"ans":0,"exp":"Rising marginal product means each added worker contributes more output than the previous worker.","unit":"unit3"},{"topic":"production","q":"If average product is at its maximum, marginal product is","options":["equal to average product.","greater than average product.","less than average product.","negative.","equal to zero."],"ans":0,"exp":"A marginal curve intersects an average curve at the average curve’s maximum or minimum.","unit":"unit3"},{"topic":"production","q":"A firm uses labor as its only variable input. Output rises from 100 to 115 when the ninth worker is hired. The ninth worker’s marginal product is","options":["9","15","100","115","215"],"ans":1,"exp":"Marginal product is 115 − 100 = 15 units.","unit":"unit3"},{"topic":"production","q":"Which concept is specifically a short-run production concept?","options":["Diminishing marginal returns","Economies of scale","Diseconomies of scale","Long-run average total cost","Entry and exit"],"ans":0,"exp":"Diminishing marginal returns requires at least one fixed input, so it is a short-run concept.","unit":"unit3"},{"topic":"production","q":"If total product reaches a maximum and then begins to fall, marginal product at the point after the maximum is","options":["negative.","positive and rising.","positive and constant.","equal to average fixed cost.","equal to total fixed cost."],"ans":0,"exp":"When total product falls, additional input reduces output, so marginal product is negative.","unit":"unit3"},{"topic":"sr_costs","q":"If total fixed cost is $120 and total variable cost is $280, total cost is","options":["$120","$160","$280","$400","$33.33"],"ans":3,"exp":"TC = TFC + TVC = 120 + 280 = $400.","unit":"unit3"},{"topic":"sr_costs","q":"If total cost is $500 and total variable cost is $350, total fixed cost is","options":["$150","$350","$500","$850","impossible to determine"],"ans":0,"exp":"TFC = TC − TVC = $500 − $350 = $150.","unit":"unit3"},{"topic":"sr_costs","q":"A firm produces 50 units. Its total variable cost is $300. What is average variable cost?","options":["$3","$6","$50","$250","$15,000"],"ans":1,"exp":"AVC = TVC ÷ Q = 300 ÷ 50 = $6.","unit":"unit3"},{"topic":"sr_costs","q":"Average total cost equals","options":["average fixed cost plus average variable cost.","total fixed cost plus marginal cost.","average variable cost minus average fixed cost.","marginal cost divided by output.","total revenue minus total cost."],"ans":0,"exp":"ATC = TC/Q = TFC/Q + TVC/Q = AFC + AVC.","unit":"unit3"},{"topic":"sr_costs","q":"As output increases, average fixed cost","options":["always decreases.","always increases.","is constant.","equals marginal cost.","equals total variable cost."],"ans":0,"exp":"A fixed cost spread over more output causes AFC to decrease.","unit":"unit3"},{"topic":"sr_costs","q":"If marginal cost is below average total cost, average total cost will","options":["rise.","fall.","stay constant.","be negative.","equal average fixed cost."],"ans":1,"exp":"When marginal is below average, it pulls average down.","unit":"unit3"},{"topic":"sr_costs","q":"A rise in a fixed cost will shift which curve upward in the short run?","options":["Average total cost","Marginal cost","Average variable cost","Marginal revenue","Demand only"],"ans":0,"exp":"Higher fixed cost raises AFC and ATC but does not affect MC or AVC.","unit":"unit3"},{"topic":"sr_costs","q":"A rise in the wage paid to workers will most directly shift","options":["MC and AVC upward.","only AFC upward.","only demand upward.","TFC downward.","MR upward."],"ans":0,"exp":"Wages are variable input costs, so they raise variable cost, marginal cost, and average variable cost.","unit":"unit3"},{"topic":"sr_costs","q":"If total cost increases from $210 to $250 when output rises from 6 to 7 units, marginal cost of the seventh unit is","options":["$7","$35","$40","$210","$250"],"ans":2,"exp":"MC = ΔTC/ΔQ = (250 − 210)/(7 − 6) = $40.","unit":"unit3"},{"topic":"sr_costs","q":"Short-run marginal cost eventually rises mainly because of","options":["diminishing marginal returns.","economies of scale.","falling fixed cost.","higher product demand.","normal profit."],"ans":0,"exp":"As marginal product falls, the cost of producing an additional unit eventually rises.","unit":"unit3"},{"topic":"sr_costs","q":"If total fixed cost is $80 and output is 20 units, average fixed cost is","options":["$4","$20","$80","$100","$1,600"],"ans":0,"exp":"AFC = TFC/Q = 80/20 = $4.","unit":"unit3"},{"topic":"sr_costs","q":"If marginal cost is greater than average variable cost, average variable cost is","options":["rising.","falling.","constant by definition.","equal to average fixed cost.","negative."],"ans":0,"exp":"When MC is above AVC, it pulls AVC upward.","unit":"unit3"},{"topic":"sr_costs","q":"A firm’s total variable cost rises from $140 to $190 when output rises from 4 to 5 units. Marginal cost of the fifth unit is","options":["$10","$38","$50","$140","$190"],"ans":2,"exp":"MC = ΔTVC/ΔQ = 190 − 140 = $50.","unit":"unit3"},{"topic":"sr_costs","q":"Which cost must be zero when output is zero?","options":["Total variable cost","Total fixed cost","Total cost","Average fixed cost","Accounting cost"],"ans":0,"exp":"Variable costs depend on output, so TVC is zero when no output is produced.","unit":"unit3"},{"topic":"sr_costs","q":"The vertical distance between total cost and total variable cost is","options":["total fixed cost.","marginal cost.","average total cost.","economic profit.","total revenue."],"ans":0,"exp":"TC − TVC = TFC, which is constant in the short run.","unit":"unit3"},{"topic":"lr_costs","q":"In the long run, a firm can adjust","options":["all inputs.","no inputs.","only fixed inputs.","only output price.","only accounting profit."],"ans":0,"exp":"The long run is the period in which all inputs are variable.","unit":"unit3"},{"topic":"lr_costs","q":"Economies of scale occur when long-run average total cost","options":["decreases as output increases.","increases as output increases.","is equal to marginal revenue.","is always above price.","causes shutdown."],"ans":0,"exp":"Economies of scale mean larger scale lowers LRATC.","unit":"unit3"},{"topic":"lr_costs","q":"Diseconomies of scale occur when","options":["long-run average total cost rises as output increases.","short-run marginal product first falls.","average fixed cost falls.","price equals marginal revenue.","economic profit is zero."],"ans":0,"exp":"Diseconomies of scale mean larger scale raises LRATC.","unit":"unit3"},{"topic":"lr_costs","q":"If output doubles when all inputs double, the firm experiences","options":["constant returns to scale.","diminishing marginal returns.","diseconomies of scale.","shutdown.","negative economic profit."],"ans":0,"exp":"Output changing in the same proportion as inputs is constant returns to scale.","unit":"unit3"},{"topic":"lr_costs","q":"If all inputs double and output more than doubles, the firm experiences","options":["economies of scale.","diseconomies of scale.","constant returns to scale.","diminishing marginal returns.","a short-run loss."],"ans":0,"exp":"Output increasing more than proportionally indicates economies of scale.","unit":"unit3"},{"topic":"lr_costs","q":"Which is most likely a cause of economies of scale?","options":["Specialization of labor and management","Increasing average fixed cost","A binding price ceiling","A per-unit tax","A decline in demand"],"ans":0,"exp":"Specialization can reduce per-unit cost as a firm expands.","unit":"unit3"},{"topic":"lr_costs","q":"Diminishing marginal returns differs from diseconomies of scale because diminishing marginal returns","options":["occurs in the short run with at least one fixed input.","occurs only when all inputs change.","is the same as long-run average cost falling.","requires price to equal marginal cost.","means accounting profit is zero."],"ans":0,"exp":"Diminishing marginal returns is a short-run concept involving fixed and variable inputs.","unit":"unit3"},{"topic":"lr_costs","q":"The long-run average total cost curve shows","options":["the lowest average cost for each output level when all inputs are variable.","only fixed costs in the short run.","marginal revenue at each output.","the demand curve facing a firm.","consumer surplus in a competitive market."],"ans":0,"exp":"LRATC shows the minimum average cost possible at each scale of output.","unit":"unit3"},{"topic":"lr_costs","q":"If total cost triples when all inputs and output double, the firm is experiencing","options":["diseconomies of scale.","economies of scale.","constant returns to scale.","normal profit.","perfect competition."],"ans":0,"exp":"If cost rises more than output, average cost rises, indicating diseconomies of scale.","unit":"unit3"},{"topic":"lr_costs","q":"Constant returns to scale means long-run average total cost","options":["does not change as output changes.","always increases.","always decreases.","equals zero.","is lower than marginal cost at every output."],"ans":0,"exp":"With constant returns to scale, average cost is unchanged as scale expands.","unit":"unit3"},{"topic":"lr_costs","q":"If output increases by 50% while total cost increases by 30%, the firm is experiencing","options":["economies of scale.","diseconomies of scale.","constant returns to scale.","diminishing returns.","shutdown."],"ans":0,"exp":"Output grows proportionally more than cost, so average cost falls.","unit":"unit3"},{"topic":"lr_costs","q":"If long-run average total cost is rising, the firm is experiencing","options":["diseconomies of scale.","economies of scale.","increasing marginal returns.","zero accounting profit.","a perfectly elastic demand curve."],"ans":0,"exp":"Rising LRATC means diseconomies of scale.","unit":"unit3"},{"topic":"lr_costs","q":"Which of the following is most likely to cause diseconomies of scale?","options":["Management coordination problems as the firm becomes very large","Bulk purchasing discounts","Worker specialization","Spreading fixed setup costs across more output","Improved production layout"],"ans":0,"exp":"Large firms may become harder to coordinate, raising average cost.","unit":"unit3"},{"topic":"lr_costs","q":"The long-run average total cost curve is often described as","options":["an envelope of short-run average total cost curves.","the same as the marginal revenue curve.","a vertical shutdown curve.","a measure of consumer surplus.","the difference between ATC and AVC."],"ans":0,"exp":"LRATC traces the lowest possible short-run ATC at each output level.","unit":"unit3"},{"topic":"lr_costs","q":"If all inputs are increased by 10% and output increases by exactly 10%, the firm experiences","options":["constant returns to scale.","economies of scale.","diseconomies of scale.","diminishing marginal returns.","negative marginal product."],"ans":0,"exp":"Inputs and output rise proportionally, indicating constant returns to scale.","unit":"unit3"},{"topic":"profit_types","q":"Accounting profit equals","options":["total revenue minus explicit costs.","total revenue minus explicit and implicit costs.","implicit costs minus explicit costs.","total cost minus total revenue.","normal profit minus opportunity cost."],"ans":0,"exp":"Accounting profit subtracts explicit costs only.","unit":"unit3"},{"topic":"profit_types","q":"Economic profit equals","options":["total revenue minus explicit and implicit costs.","total revenue minus explicit costs only.","accounting profit plus implicit costs.","total revenue plus total cost.","fixed cost divided by output."],"ans":0,"exp":"Economic profit includes both explicit and implicit costs.","unit":"unit3"},{"topic":"profit_types","q":"A firm earns zero economic profit. This means the firm","options":["earns normal profit.","earns zero accounting profit.","must shut down immediately.","has no revenue.","has no explicit costs."],"ans":0,"exp":"Zero economic profit means the firm covers all explicit and implicit costs, including normal profit.","unit":"unit3"},{"topic":"profit_types","q":"If total revenue is $1,000, explicit cost is $600, and implicit cost is $250, economic profit is","options":["$150","$250","$400","$600","$1,850"],"ans":0,"exp":"Economic profit = 1000 − 600 − 250 = $150.","unit":"unit3"},{"topic":"profit_types","q":"If accounting profit is $300 and implicit costs are $120, economic profit is","options":["$180","$300","$420","$120","-$180"],"ans":0,"exp":"Economic profit = accounting profit − implicit costs = 300 − 120 = $180.","unit":"unit3"},{"topic":"profit_types","q":"Implicit costs are best described as","options":["opportunity costs of using owned resources.","cash payments to workers.","taxes paid to government.","fixed costs only.","marginal costs only."],"ans":0,"exp":"Implicit costs are forgone returns from resources the firm already owns.","unit":"unit3"},{"topic":"profit_types","q":"Positive economic profit in a competitive market will tend to cause","options":["entry of new firms in the long run.","exit of existing firms in the long run.","price to remain permanently above ATC.","demand for the firm to slope downward.","fixed cost to become zero."],"ans":0,"exp":"Positive economic profit attracts entry.","unit":"unit3"},{"topic":"profit_types","q":"Negative economic profit in a competitive market will tend to cause","options":["exit of firms in the long run.","entry of firms in the long run.","market supply to increase.","price to fall further from entry.","normal profit to be impossible."],"ans":0,"exp":"Losses cause firms to exit in the long run.","unit":"unit3"},{"topic":"profit_types","q":"Normal profit is included in","options":["implicit costs.","total revenue.","marginal cost only.","average fixed cost only.","consumer surplus."],"ans":0,"exp":"Normal profit is the opportunity cost of entrepreneurship and is treated as an implicit cost.","unit":"unit3"},{"topic":"profit_types","q":"A firm with positive accounting profit and zero economic profit is","options":["earning normal profit.","earning no revenue.","forced to shut down immediately.","earning negative accounting profit.","not covering explicit costs."],"ans":0,"exp":"Zero economic profit means all costs including normal profit are covered.","unit":"unit3"},{"topic":"profit_types","q":"If a business owner gives up a $70,000 salary to run a firm, that forgone salary is","options":["an implicit cost.","an explicit cost.","total revenue.","consumer surplus.","a fixed input."],"ans":0,"exp":"The forgone salary is an opportunity cost of using the owner’s time.","unit":"unit3"},{"topic":"profit_types","q":"If economic profit is positive, then accounting profit must be","options":["positive.","negative.","zero.","equal to implicit costs.","less than economic profit."],"ans":0,"exp":"Economic profit subtracts more costs than accounting profit, so positive economic profit implies positive accounting profit.","unit":"unit3"},{"topic":"profit_types","q":"If total revenue equals explicit plus implicit costs, the firm earns","options":["zero economic profit.","negative accounting profit.","positive economic profit.","no normal profit.","zero total revenue."],"ans":0,"exp":"Economic profit equals TR − explicit costs − implicit costs, which is zero here.","unit":"unit3"},{"topic":"profit_types","q":"Which statement is true?","options":["Economic profit is never greater than accounting profit.","Accounting profit includes implicit costs.","Normal profit means total revenue is zero.","Explicit costs are opportunity costs with no cash payment.","Implicit costs are always larger than explicit costs."],"ans":0,"exp":"Economic profit subtracts both explicit and implicit costs, so it is less than or equal to accounting profit.","unit":"unit3"},{"topic":"profit_types","q":"A firm has total revenue of $500, explicit costs of $350, and implicit costs of $200. The firm’s economic profit is","options":["-$50","$150","$200","$350","$700"],"ans":0,"exp":"Economic profit = 500 − 350 − 200 = -$50.","unit":"unit3"},{"topic":"profit_max","q":"A profit-maximizing firm produces the quantity where","options":["MR = MC, using the last unit for which MR ≥ MC.","ATC is highest.","AFC is highest.","TR = TFC.","AVC equals zero."],"ans":0,"exp":"The marginal decision rule is to produce where MR = MC.","unit":"unit3"},{"topic":"profit_max","q":"For a perfectly competitive firm, marginal revenue equals","options":["price.","average fixed cost.","total cost.","economic profit.","market demand."],"ans":0,"exp":"A perfectly competitive firm is a price taker, so each additional unit sells at the market price.","unit":"unit3"},{"topic":"profit_max","q":"If MR is greater than MC for the next unit, a firm should","options":["increase output.","decrease output.","shut down immediately.","raise fixed cost.","exit the market immediately."],"ans":0,"exp":"If MR > MC, the additional unit adds to profit.","unit":"unit3"},{"topic":"profit_max","q":"If MC is greater than MR for the next unit, a firm should","options":["not produce that additional unit.","produce more units.","increase variable input regardless of cost.","ignore marginal analysis.","raise output until ATC is maximum."],"ans":0,"exp":"If MC > MR, the additional unit lowers profit.","unit":"unit3"},{"topic":"profit_max","q":"If price is $20, average total cost is $16, and output is 100, the firm’s economic profit is","options":["$400","$1,600","$2,000","$3,600","-$400"],"ans":0,"exp":"Profit = (P − ATC)Q = (20 − 16) × 100 = $400.","unit":"unit3"},{"topic":"profit_max","q":"If price is less than average total cost but greater than average variable cost, the firm","options":["produces at an economic loss in the short run.","earns positive economic profit.","must shut down immediately.","has zero total revenue.","has no variable costs."],"ans":0,"exp":"The firm covers variable cost and part of fixed cost, so it produces in the short run despite losses.","unit":"unit3"},{"topic":"profit_max","q":"A competitive firm’s marginal revenue curve is","options":["horizontal at the market price.","downward sloping like the market demand curve.","vertical at the profit-maximizing quantity.","equal to average fixed cost.","always below average variable cost."],"ans":0,"exp":"A price-taking firm can sell any individual output at the market price.","unit":"unit3"},{"topic":"profit_max","q":"If a firm produces where MR = MC and P > ATC, it earns","options":["positive economic profit.","negative economic profit.","zero economic profit.","only normal profit.","no accounting profit."],"ans":0,"exp":"When price exceeds ATC at the chosen output, the firm earns economic profit.","unit":"unit3"},{"topic":"profit_max","q":"If a firm produces where MR = MC and P = ATC, it earns","options":["zero economic profit.","positive economic profit.","negative economic profit.","a shutdown loss.","no revenue."],"ans":0,"exp":"P = ATC means the firm covers all costs including normal profit.","unit":"unit3"},{"topic":"profit_max","q":"Profit per unit is equal to","options":["price minus average total cost.","total revenue minus marginal cost.","marginal revenue minus fixed cost.","average fixed cost minus average variable cost.","price multiplied by quantity."],"ans":0,"exp":"Profit per unit equals P − ATC.","unit":"unit3"},{"topic":"profit_max","q":"If price is $15, ATC is $18, and output is 40, the firm’s economic profit is","options":["-$120","$120","$600","$720","$3"],"ans":0,"exp":"Profit = (15 − 18) × 40 = -$120.","unit":"unit3"},{"topic":"profit_max","q":"A firm should produce the fifth unit if the marginal revenue of the fifth unit is $30 and its marginal cost is","options":["$25","$30 or less","more than $30 only","zero only","equal to average fixed cost only"],"ans":1,"exp":"Produce an additional unit when MR ≥ MC.","unit":"unit3"},{"topic":"profit_max","q":"At the profit-maximizing quantity, if price is below ATC but above AVC, the firm’s loss per unit is","options":["ATC − P.","P − ATC.","P − AVC.","AVC − P.","MC − MR."],"ans":0,"exp":"Loss per unit is cost per unit minus revenue per unit: ATC − P.","unit":"unit3"},{"topic":"profit_max","q":"If a firm’s total revenue is $900 and total cost is $750, profit is","options":["$150","$750","$900","$1,650","-$150"],"ans":0,"exp":"Profit = TR − TC = $900 − $750 = $150.","unit":"unit3"},{"topic":"profit_max","q":"Using a table, the profit-maximizing output is the output where","options":["the last unit produced has MR at least as large as MC and the next unit has MC greater than MR.","average fixed cost is highest.","total revenue is lowest.","marginal product is zero.","ATC is always rising."],"ans":0,"exp":"With discrete units, produce the last unit for which MR ≥ MC.","unit":"unit3"},{"topic":"firm_decisions","q":"In the short run, a firm should shut down if","options":["P < AVC.","P > AVC.","P = MC.","P > ATC.","MR > MC."],"ans":0,"exp":"The short-run shutdown rule is P < AVC.","unit":"unit3"},{"topic":"firm_decisions","q":"In the long run, a firm should exit the market if","options":["P < ATC.","P > AVC.","P = MC.","P > ATC.","MR = MC."],"ans":0,"exp":"The long-run exit rule is P < ATC.","unit":"unit3"},{"topic":"firm_decisions","q":"If P = $9, AVC = $7, and ATC = $12 at the profit-maximizing output, the firm should","options":["produce in the short run but exit in the long run if conditions persist.","shut down immediately because P < ATC.","earn positive economic profit.","produce zero output only because P > AVC.","enter the market in the long run."],"ans":0,"exp":"P covers AVC, so produce in the short run; P < ATC means losses and long-run exit pressure.","unit":"unit3"},{"topic":"firm_decisions","q":"If price is below average variable cost at every output level, a firm’s best short-run decision is to","options":["shut down.","produce where P = ATC.","produce where AVC is highest.","enter the market.","increase fixed cost."],"ans":0,"exp":"If price cannot cover variable cost, the firm minimizes loss by shutting down.","unit":"unit3"},{"topic":"firm_decisions","q":"A firm that shuts down in the short run must still pay","options":["fixed costs.","variable costs only.","marginal costs only.","no costs.","economic profit."],"ans":0,"exp":"A shutdown firm produces zero but still pays fixed costs in the short run.","unit":"unit3"},{"topic":"firm_decisions","q":"If a firm produces in the short run while earning a loss, it must be true that","options":["price is at least average variable cost.","price is below average variable cost.","price is greater than average total cost.","fixed costs are zero.","marginal cost is zero."],"ans":0,"exp":"A loss-making firm produces in the short run if it covers variable cost.","unit":"unit3"},{"topic":"firm_decisions","q":"Which condition indicates a firm should produce zero output in the short run?","options":["TR < TVC","TR > TVC","P > ATC","MR = MC","Economic profit is positive"],"ans":0,"exp":"If total revenue is less than total variable cost, the firm cannot cover variable costs.","unit":"unit3"},{"topic":"firm_decisions","q":"If P = AVC at the profit-maximizing output, the firm is at its","options":["shutdown point.","break-even point for economic profit.","long-run entry point.","maximum profit point with positive profit.","minimum AFC point."],"ans":0,"exp":"The minimum of AVC is the shutdown point for a competitive firm.","unit":"unit3"},{"topic":"firm_decisions","q":"A firm exits in the long run when it cannot cover","options":["total costs, including implicit costs.","variable costs only.","fixed costs only.","marginal revenue only.","consumer surplus."],"ans":0,"exp":"Long-run exit occurs when the firm cannot cover total economic costs.","unit":"unit3"},{"topic":"firm_decisions","q":"If a firm’s total revenue is greater than total variable cost but less than total cost, the firm should","options":["produce in the short run but not remain in the long run if conditions persist.","shut down immediately.","earn positive economic profit.","enter the industry.","ignore fixed costs in the long run."],"ans":0,"exp":"TR > TVC means produce in the short run; TR < TC means losses and long-run exit pressure.","unit":"unit3"},{"topic":"firm_decisions","q":"If P = $5, AVC = $7, and ATC = $11, the firm should","options":["shut down in the short run.","produce because P is below ATC.","produce because fixed costs are sunk.","earn zero economic profit.","enter the market."],"ans":0,"exp":"Since P < AVC, the firm cannot cover variable cost and should shut down.","unit":"unit3"},{"topic":"firm_decisions","q":"If a firm shuts down in the short run, its loss equals","options":["total fixed cost.","total variable cost.","total revenue.","marginal cost.","average total cost."],"ans":0,"exp":"A shutdown firm earns no revenue and pays no variable cost, but still pays fixed cost.","unit":"unit3"},{"topic":"firm_decisions","q":"Which condition is enough for a competitive firm to continue producing in the short run?","options":["P ≥ minimum AVC","P < minimum AVC","P < every possible ATC","TR < TVC","Economic profit is negative regardless of AVC"],"ans":0,"exp":"A competitive firm produces in the short run if price covers at least average variable cost.","unit":"unit3"},{"topic":"firm_decisions","q":"The long-run exit rule differs from the short-run shutdown rule because in the long run","options":["all costs are avoidable.","fixed costs must always be paid forever.","variable costs are zero.","firms ignore opportunity costs.","price always equals AVC."],"ans":0,"exp":"In the long run, firms can avoid all costs by exiting.","unit":"unit3"},{"topic":"firm_decisions","q":"If P is greater than ATC at the profit-maximizing output, the firm should","options":["produce in the short run and remain in the industry in the long run.","shut down in the short run.","exit in the long run.","produce zero output.","lower price below AVC."],"ans":0,"exp":"P > ATC means positive economic profit, so producing and remaining are profitable.","unit":"unit3"},{"topic":"perfect_comp","q":"A perfectly competitive firm is a price taker because","options":["it sells a product identical to many other firms’ products.","it controls market price.","it faces no competitors.","it sets price above marginal revenue.","it has a downward-sloping firm demand curve."],"ans":0,"exp":"With many sellers and identical products, an individual firm cannot influence market price.","unit":"unit3"},{"topic":"perfect_comp","q":"For a perfectly competitive firm, which equality is true?","options":["P = MR = AR","P > MR > AR","MR = MC at every output level","P = AFC","ATC = AVC always"],"ans":0,"exp":"For a price taker, price equals marginal revenue and average revenue.","unit":"unit3"},{"topic":"perfect_comp","q":"In long-run equilibrium in perfect competition, firms earn","options":["zero economic profit.","positive economic profit.","negative economic profit.","zero accounting profit necessarily.","monopoly profit."],"ans":0,"exp":"Entry and exit drive economic profit to zero in the long run.","unit":"unit3"},{"topic":"perfect_comp","q":"If firms in a perfectly competitive industry earn positive economic profit, in the long run","options":["new firms enter, market supply increases, and price falls.","firms exit, market supply decreases, and price rises.","demand decreases automatically.","the firm demand curve becomes downward sloping.","price rises further."],"ans":0,"exp":"Positive economic profit attracts entry, increasing supply and lowering price.","unit":"unit3"},{"topic":"perfect_comp","q":"If firms in a perfectly competitive industry incur economic losses, in the long run","options":["some firms exit, market supply decreases, and price rises.","new firms enter, market supply increases, and price falls.","price falls because losses attract entry.","marginal cost becomes zero.","firms must keep producing forever."],"ans":0,"exp":"Losses cause exit, reducing market supply and raising price.","unit":"unit3"},{"topic":"perfect_comp","q":"In long-run equilibrium for a perfectly competitive firm, price equals","options":["minimum average total cost.","maximum average total cost.","average fixed cost only.","total revenue.","consumer surplus."],"ans":0,"exp":"Long-run competitive equilibrium occurs where P = MC = minimum ATC.","unit":"unit3"},{"topic":"perfect_comp","q":"The short-run supply curve of a perfectly competitive firm is its","options":["MC curve above minimum AVC.","ATC curve above minimum AVC.","demand curve below ATC.","AFC curve.","MR curve below AVC."],"ans":0,"exp":"A competitive firm supplies along MC where price covers AVC.","unit":"unit3"},{"topic":"perfect_comp","q":"If a perfectly competitive firm raises its price above the market price, it will most likely","options":["sell zero output.","increase total revenue.","increase market share.","force all firms to raise price.","still sell all output."],"ans":0,"exp":"Because the product is identical and many sellers exist, buyers switch to other firms at the market price.","unit":"unit3"},{"topic":"perfect_comp","q":"Perfect competition assumes","options":["many buyers and sellers, identical products, and easy entry and exit.","one seller and high barriers to entry.","a few firms selling differentiated products.","government-set prices only.","firms with full price-setting power."],"ans":0,"exp":"These are key assumptions of perfect competition.","unit":"unit3"},{"topic":"perfect_comp","q":"In perfect competition, allocative efficiency occurs where","options":["P = MC.","P = AVC.","P = AFC.","MR = zero.","ATC is maximum."],"ans":0,"exp":"Allocative efficiency means price equals marginal cost.","unit":"unit3"},{"topic":"perfect_comp","q":"A perfectly competitive firm’s demand curve is","options":["perfectly elastic.","perfectly inelastic.","downward sloping.","upward sloping.","U-shaped."],"ans":0,"exp":"The firm can sell output at the market price but cannot charge more.","unit":"unit3"},{"topic":"perfect_comp","q":"In long-run perfect competition, productive efficiency occurs because firms produce where","options":["P = minimum ATC.","P > minimum ATC.","P < AVC.","MR = AFC.","MC is zero."],"ans":0,"exp":"Productive efficiency means producing at minimum average total cost.","unit":"unit3"},{"topic":"perfect_comp","q":"If market demand increases in a perfectly competitive industry, short-run economic profit will likely","options":["increase, attracting entry in the long run.","decrease, causing exit immediately.","remain zero forever without adjustment.","cause each firm’s demand curve to slope downward.","make price fall."],"ans":0,"exp":"Higher demand raises price and profit in the short run, encouraging entry.","unit":"unit3"},{"topic":"perfect_comp","q":"When firms enter a perfectly competitive market, the market supply curve","options":["shifts right.","shifts left.","does not change.","becomes vertical.","equals the firm’s AFC curve."],"ans":0,"exp":"Entry increases the number of sellers and shifts market supply right.","unit":"unit3"},{"topic":"perfect_comp","q":"A perfectly competitive firm in long-run equilibrium earns zero economic profit because","options":["entry and exit eliminate economic profit and loss.","the government sets price equal to zero.","firms never have explicit costs.","demand is perfectly inelastic.","marginal cost is always zero."],"ans":0,"exp":"Free entry and exit drive economic profit toward zero.","unit":"unit3"}]},"unit4":{"title":"Unit 4: Imperfect Competition","topics":{"intro":"4.1 Introduction to Imperfectly Competitive Markets","monopoly":"4.2 Monopoly","pd":"4.3 Price Discrimination","moncomp":"4.4 Monopolistic Competition","oligopoly":"4.5 Oligopoly and Game Theory"},"questions":[{"topic":"intro","q":"An imperfectly competitive firm is most likely to face which demand curve?","options":["Downward sloping","Horizontal at market price","Vertical at market price","Equal to MC","Equal to AFC"],"ans":0,"exp":"Market power gives the firm a downward-sloping demand curve.","unit":"unit4"},{"topic":"intro","q":"For a single-price firm with market power, marginal revenue is","options":["below demand","above demand","equal to price at every quantity","vertical","equal to ATC"],"ans":0,"exp":"Lowering price to sell more units makes MR less than price.","unit":"unit4"},{"topic":"intro","q":"A profit-maximizing imperfectly competitive firm chooses output where","options":["MR = MC","P = MC","P = ATC","MR = demand","ATC is minimized"],"ans":0,"exp":"All profit-maximizing firms use the MR = MC rule.","unit":"unit4"},{"topic":"intro","q":"After finding Q where MR = MC, a monopolist finds price by","options":["going up to demand","going up to MR","setting P = MC","setting P = AVC","using AFC"],"ans":0,"exp":"Price is read from the demand curve at the chosen quantity.","unit":"unit4"},{"topic":"intro","q":"Imperfectly competitive markets are usually allocatively inefficient because","options":["P > MC","P = MC","P < MR","ATC = minimum","AFC rises"],"ans":0,"exp":"Allocative efficiency requires P = MC.","unit":"unit4"},{"topic":"intro","q":"If MR exceeds MC, the firm should","options":["increase output","decrease output","shut down automatically","raise fixed cost","ignore demand"],"ans":0,"exp":"The next unit adds more revenue than cost.","unit":"unit4"},{"topic":"intro","q":"If MC exceeds MR, the firm should","options":["decrease output","increase output","set P = MC immediately","produce minimum ATC","maximize revenue"],"ans":0,"exp":"The last unit costs more than it adds to revenue.","unit":"unit4"},{"topic":"intro","q":"A single-price firm’s total revenue is maximized when","options":["MR = 0","MC = 0","P = MC","P = ATC","AFC = AVC"],"ans":0,"exp":"Total revenue peaks where marginal revenue is zero.","unit":"unit4"},{"topic":"intro","q":"A profit-maximizing single-price firm avoids the inelastic part of demand because","options":["MR is negative there","MC is zero there","P equals MC there","ATC is always minimized there","demand is horizontal there"],"ans":0,"exp":"In the inelastic region, lowering output can raise TR and lower cost.","unit":"unit4"},{"topic":"intro","q":"If demand is elastic, a price decrease causes total revenue to","options":["increase","decrease","stay constant","become negative","equal fixed cost"],"ans":0,"exp":"Quantity rises proportionally more than price falls.","unit":"unit4"},{"topic":"intro","q":"If demand is inelastic, a price increase causes total revenue to","options":["increase","decrease","stay constant","become zero","equal total cost"],"ans":0,"exp":"In the inelastic range, price and total revenue move together.","unit":"unit4"},{"topic":"intro","q":"Compared with perfect competition, imperfect competition generally has","options":["higher price and lower quantity","lower price and higher quantity","P = MC always","no DWL","minimum ATC always"],"ans":0,"exp":"Market power restricts output and raises price.","unit":"unit4"},{"topic":"monopoly","q":"A monopoly has","options":["one seller and high barriers to entry","many sellers and identical products","many sellers and free entry","a few interdependent firms","no market power"],"ans":0,"exp":"A monopoly is a single seller protected by barriers.","unit":"unit4"},{"topic":"monopoly","q":"Which is a source of monopoly power?","options":["Barriers to entry","Perfect information","Free entry","Many identical firms","Horizontal demand"],"ans":0,"exp":"Barriers prevent rivals from entering.","unit":"unit4"},{"topic":"monopoly","q":"A monopolist’s demand curve is","options":["the market demand curve","horizontal at market price","the MC curve","perfectly elastic","the ATC curve"],"ans":0,"exp":"The monopolist is the entire market supply side.","unit":"unit4"},{"topic":"monopoly","q":"A single-price monopolist maximizes profit where","options":["MR = MC","P = MC","P = minimum ATC","MR = demand","TR is lowest"],"ans":0,"exp":"The profit rule is MR = MC.","unit":"unit4"},{"topic":"monopoly","q":"Compared with perfect competition, a single-price monopoly produces","options":["less output at a higher price","more output at a lower price","same output and same price","more output at higher price","less output at lower price"],"ans":0,"exp":"Monopoly restricts output and raises price.","unit":"unit4"},{"topic":"monopoly","q":"Monopoly deadweight loss exists because","options":["some mutually beneficial trades do not occur","the firm produces too much","P is below MC","profit is always zero","demand is horizontal"],"ans":0,"exp":"Qm is below the efficient quantity.","unit":"unit4"},{"topic":"monopoly","q":"A natural monopoly exists when","options":["one firm can serve the market at lower average cost than multiple firms","many firms sell identical products","entry is free","ATC rises throughout demand","demand is horizontal"],"ans":0,"exp":"Economies of scale can make one firm least-cost.","unit":"unit4"},{"topic":"monopoly","q":"A lump-sum tax on a monopolist affects","options":["ATC and profit but not MC","MC and output directly","demand only","MR only","consumer income only"],"ans":0,"exp":"A lump-sum tax is a fixed cost.","unit":"unit4"},{"topic":"monopoly","q":"A per-unit tax on a monopolist will most likely","options":["raise MC and reduce output","lower MC and raise output","only raise AFC","leave output unchanged always","shift demand right"],"ans":0,"exp":"A per-unit tax raises marginal cost.","unit":"unit4"},{"topic":"monopoly","q":"A technology improvement that lowers MC will most likely cause monopoly price and output to","options":["decrease price and increase output","increase price and decrease output","decrease both","increase both","stay unchanged"],"ans":0,"exp":"Lower MC leads to larger Q and usually lower P.","unit":"unit4"},{"topic":"monopoly","q":"Fair-return regulation sets","options":["P = ATC","P = MC","MR = MC","MR = 0","P = AFC"],"ans":0,"exp":"Fair-return pricing lets the firm earn zero economic profit.","unit":"unit4"},{"topic":"monopoly","q":"Marginal-cost pricing regulation sets","options":["P = MC","P = ATC","MR = MC","MR = 0","P = AVC"],"ans":0,"exp":"P = MC achieves allocative efficiency.","unit":"unit4"},{"topic":"pd","q":"Price discrimination means charging","options":["different prices based on willingness to pay","one price to all buyers","P = MC to all buyers","P = ATC to all buyers","zero price to some buyers"],"ans":0,"exp":"Price discrimination separates buyers by willingness to pay.","unit":"unit4"},{"topic":"pd","q":"Which is required for price discrimination?","options":["Market power","Perfect competition","Easy resale","Identical willingness to pay","Horizontal demand"],"ans":0,"exp":"The firm must be able to influence price.","unit":"unit4"},{"topic":"pd","q":"Price discrimination is difficult if","options":["resale is easy","consumers can be separated","the firm has market power","demand differs across groups","resale is impossible"],"ans":0,"exp":"Arbitrage defeats price discrimination.","unit":"unit4"},{"topic":"pd","q":"Perfect price discrimination charges each buyer","options":["maximum willingness to pay","the same price","minimum ATC","zero","marginal cost regardless of WTP"],"ans":0,"exp":"Perfect PD captures each buyer’s WTP.","unit":"unit4"},{"topic":"pd","q":"Under perfect price discrimination, consumer surplus is","options":["eliminated","maximized","unchanged","negative","equal to fixed cost"],"ans":0,"exp":"The seller captures consumer surplus.","unit":"unit4"},{"topic":"pd","q":"Perfect price discrimination sells the last unit where","options":["P = MC","MR = 0","P = ATC","P = AFC","MC = AVC"],"ans":0,"exp":"The final buyer’s willingness to pay equals MC.","unit":"unit4"},{"topic":"pd","q":"Compared with single-price monopoly, perfect price discrimination usually","options":["increases output","decreases output","leaves output unchanged","eliminates producer surplus","creates horizontal demand"],"ans":0,"exp":"The firm sells additional units to lower-WTP buyers.","unit":"unit4"},{"topic":"pd","q":"Perfect price discrimination can reduce DWL because","options":["output moves toward P = MC","consumer surplus rises","price is identical for all buyers","the firm loses market power","MC becomes zero"],"ans":0,"exp":"More efficient units are sold.","unit":"unit4"},{"topic":"pd","q":"A student discount is likely price discrimination if","options":["students can be identified and resale is limited","all customers have identical demand","the firm is a price taker","resale is easy","price equals MC"],"ans":0,"exp":"Group separation and no resale are key.","unit":"unit4"},{"topic":"pd","q":"A firm should charge a higher price to the group with","options":["more inelastic demand","more elastic demand","perfectly elastic demand","zero demand","no willingness to pay"],"ans":0,"exp":"Less elastic buyers are less responsive to price.","unit":"unit4"},{"topic":"pd","q":"Perfect price discrimination transfers surplus from","options":["consumers to producers","producers to consumers","government to consumers","fixed cost to variable cost","MC to ATC"],"ans":0,"exp":"The firm captures consumer surplus.","unit":"unit4"},{"topic":"pd","q":"For perfect price discrimination, the demand curve acts like","options":["the marginal revenue curve","the AFC curve","the MC curve","the total cost curve","the shutdown curve"],"ans":0,"exp":"Each unit is sold at its own price.","unit":"unit4"},{"topic":"moncomp","q":"Monopolistic competition has","options":["many firms, differentiated products, and low entry barriers","one firm and high barriers","few interdependent firms","identical products only","no market power"],"ans":0,"exp":"That is the standard definition.","unit":"unit4"},{"topic":"moncomp","q":"A monopolistically competitive firm faces downward-sloping demand because","options":["its product is differentiated","it is a price taker","entry is impossible","it sells a homogeneous product","it has no rivals"],"ans":0,"exp":"Differentiation gives some market power.","unit":"unit4"},{"topic":"moncomp","q":"A monopolistically competitive firm maximizes profit where","options":["MR = MC","P = MC","P = minimum ATC","MR = demand","P = AFC"],"ans":0,"exp":"The same marginal rule applies.","unit":"unit4"},{"topic":"moncomp","q":"In the long run, monopolistically competitive firms earn","options":["zero economic profit","positive profit forever","losses forever","zero accounting profit necessarily","monopoly profit"],"ans":0,"exp":"Entry and exit eliminate economic profit.","unit":"unit4"},{"topic":"moncomp","q":"Long-run monopolistic competition has demand tangent to","options":["ATC","MC","AFC","MR","TVC"],"ans":0,"exp":"Tangency gives P = ATC.","unit":"unit4"},{"topic":"moncomp","q":"Monopolistic competition is not productively efficient because","options":["ATC is not minimized","P = ATC","MR = MC","economic profit is zero","entry is easy"],"ans":0,"exp":"Firms produce with excess capacity.","unit":"unit4"},{"topic":"moncomp","q":"Monopolistic competition is not allocatively efficient because","options":["P > MC","P = MC","P < MC","P = ATC","MR = MC"],"ans":0,"exp":"Market power keeps P above MC.","unit":"unit4"},{"topic":"moncomp","q":"If short-run profit exists, long-run entry will","options":["shift each firm’s demand left","shift each firm’s demand right","raise each firm’s profit permanently","eliminate differentiation","make demand horizontal"],"ans":0,"exp":"Entry divides customers among more firms.","unit":"unit4"},{"topic":"moncomp","q":"If short-run losses exist, long-run exit will","options":["shift remaining firms’ demand right","shift remaining firms’ demand left","increase the number of firms","guarantee P = MC","eliminate market power"],"ans":0,"exp":"Exit leaves more demand for remaining firms.","unit":"unit4"},{"topic":"moncomp","q":"Excess capacity means the firm produces","options":["less than the output that minimizes ATC","more than minimum-ATC output","where P = MC","where AFC is maximum","where demand is horizontal"],"ans":0,"exp":"Long-run output is left of minimum ATC.","unit":"unit4"},{"topic":"moncomp","q":"Which is most likely monopolistically competitive?","options":["Restaurants","A city water utility","Wheat farming","One patented drug","Two aircraft producers"],"ans":0,"exp":"Restaurants are differentiated with relatively easy entry.","unit":"unit4"},{"topic":"moncomp","q":"Advertising in monopolistic competition is used to","options":["differentiate products and shift demand","make products identical","force P = MC","eliminate all cost","become a price taker"],"ans":0,"exp":"Advertising builds perceived differentiation.","unit":"unit4"},{"topic":"oligopoly","q":"Oligopoly is a market with","options":["a few interdependent firms","many price-taking firms","one seller only","no barriers","perfectly elastic demand"],"ans":0,"exp":"Oligopoly has a few strategic firms.","unit":"unit4"},{"topic":"oligopoly","q":"The key feature of oligopoly is","options":["interdependence","zero market power","free entry","identical pricing with no strategy","horizontal demand"],"ans":0,"exp":"Each firm reacts to rivals.","unit":"unit4"},{"topic":"oligopoly","q":"A dominant strategy is","options":["best regardless of rival action","best only if rivals cooperate","always illegal","the joint-profit maximum","the same as shutdown"],"ans":0,"exp":"Dominant means best no matter what the other player does.","unit":"unit4"},{"topic":"oligopoly","q":"A Nash equilibrium occurs when","options":["no player wants to switch alone","joint profit is always maximized","both earn zero profit","collusion is guaranteed","there is no strategy"],"ans":0,"exp":"Nash is stable against unilateral changes.","unit":"unit4"},{"topic":"oligopoly","q":"Collusion tries to","options":["raise joint profit by restricting output","make price equal MC","increase competition","remove barriers","make firms price takers"],"ans":0,"exp":"Collusion acts like monopoly.","unit":"unit4"},{"topic":"oligopoly","q":"Cartels are unstable because each firm may want to","options":["cheat by producing more","raise price and sell nothing","eliminate demand","set price to zero","make entry easier"],"ans":0,"exp":"Cheating can increase one firm’s profit if others restrict output.","unit":"unit4"},{"topic":"oligopoly","q":"In a prisoner’s dilemma, Nash equilibrium is often","options":["worse for both than cooperation","always the joint maximum","always efficient","impossible","perfectly competitive"],"ans":0,"exp":"Individual incentives can undermine cooperation.","unit":"unit4"},{"topic":"oligopoly","q":"A payoff matrix is used to analyze","options":["strategic choices and payoffs","only fixed costs","consumer surplus only","production functions","perfectly elastic demand"],"ans":0,"exp":"Game theory represents interdependent payoffs.","unit":"unit4"},{"topic":"oligopoly","q":"Nonprice competition includes","options":["advertising and product features","P = MC only","no differentiation","zero output","government price ceilings"],"ans":0,"exp":"Oligopolies often compete using advertising or features.","unit":"unit4"},{"topic":"oligopoly","q":"Repeated games make cooperation more likely because","options":["firms can punish cheating later","firms become price takers","barriers vanish","dominant strategies vanish","demand becomes horizontal"],"ans":0,"exp":"Future punishment can discourage cheating.","unit":"unit4"},{"topic":"oligopoly","q":"Which is most likely an oligopoly?","options":["Commercial aircraft","Wheat farming","A local water monopoly","Hundreds of identical sellers","Perfect competition"],"ans":0,"exp":"Commercial aircraft has few large firms and high barriers.","unit":"unit4"},{"topic":"oligopoly","q":"If oligopoly firms compete instead of collude, price is usually","options":["lower than the collusive price","higher than collusive price","always zero","above all WTP","same as monopoly always"],"ans":0,"exp":"Competition pushes price below cartel levels.","unit":"unit4"}]},"unit5":{"title":"Unit 5: Factor Markets","topics":{"intro_factor":"5.1 Introduction to Factor Markets","factor_shifts":"5.2 Changes in Factor Demand and Factor Supply","pc_factor":"5.3 Profit Maximization in Perfectly Competitive Factor Markets","cost_min":"5.4 Cost-Minimizing Input Combination","monopsony":"5.5 Monopsony and Minimum Wage"},"questions":[{"topic":"intro_factor","q":"The demand for labor is called derived demand because it depends on","options":["demand for the product labor produces","the supply of labor only","workers’ preference for leisure","the minimum wage only","average fixed cost"],"ans":0,"exp":"Labor demand is derived from demand for the final good or service.","unit":"unit5"},{"topic":"intro_factor","q":"If demand for restaurant meals increases, the demand for restaurant workers will most likely","options":["increase","decrease","not change","become perfectly elastic","equal labor supply"],"ans":0,"exp":"Product demand rising increases derived demand for workers.","unit":"unit5"},{"topic":"intro_factor","q":"A firm’s demand curve for labor is closely related to its","options":["marginal revenue product curve","average fixed cost curve","total revenue curve only","consumer demand curve for leisure","average product curve only"],"ans":0,"exp":"The firm hires workers based on the extra revenue each worker creates.","unit":"unit5"},{"topic":"intro_factor","q":"Which is an example of derived demand?","options":["Demand for pilots depends on demand for air travel","Demand for pizza depends on pizza’s price","Labor supply depends on leisure preference","Consumers buy more when price falls","A price ceiling causes shortage"],"ans":0,"exp":"Pilots are an input in producing air travel.","unit":"unit5"},{"topic":"intro_factor","q":"Economic rent is payment to a factor that is","options":["above its opportunity cost","equal to variable cost only","below its next-best alternative","always zero","paid only to labor unions"],"ans":0,"exp":"Economic rent is payment above what is needed to keep the factor in its current use.","unit":"unit5"},{"topic":"intro_factor","q":"A firm’s demand for accountants is most directly affected by","options":["the value of the output accountants help produce","only the number of accountants willing to work","the accountants’ preference for leisure only","consumer surplus in the product market","the firm’s fixed cost only"],"ans":0,"exp":"Factor demand depends on productivity and product value.","unit":"unit5"},{"topic":"intro_factor","q":"Which group supplies labor in a labor market?","options":["Workers","Firms","Product consumers","Government only","Capital owners only"],"ans":0,"exp":"Workers supply labor; firms demand labor.","unit":"unit5"},{"topic":"intro_factor","q":"Which group demands labor in a labor market?","options":["Firms","Workers","Households as workers","Labor unions only","Retired people only"],"ans":0,"exp":"Firms hire labor as an input.","unit":"unit5"},{"topic":"intro_factor","q":"A decrease in the demand for new homes will most likely decrease demand for","options":["construction workers","movie tickets","restaurant meals","leisure only","money"],"ans":0,"exp":"Construction labor demand is derived from demand for homes.","unit":"unit5"},{"topic":"intro_factor","q":"A factor of production is","options":["an input used to produce goods and services","a final good sold to consumers","only a consumer product","always a government policy","always a fixed cost"],"ans":0,"exp":"Factors include labor, capital, land, and entrepreneurship.","unit":"unit5"},{"topic":"intro_factor","q":"If the product price rises and productivity is unchanged, MRP will","options":["increase","decrease","stay zero","become negative","equal wage automatically"],"ans":0,"exp":"MRP = MP × product price in a competitive product market.","unit":"unit5"},{"topic":"intro_factor","q":"If the demand for apples increases, the demand for apple pickers will likely","options":["increase","decrease","not change","shift left because wages rise","become perfectly inelastic"],"ans":0,"exp":"Demand for apple pickers is derived from demand for apples.","unit":"unit5"},{"topic":"factor_shifts","q":"Which change shifts labor demand to the right?","options":["An increase in product demand","A decrease in wage only","An increase in worker preference for leisure","An increase in labor supply","A decrease in retirement age"],"ans":0,"exp":"Product demand is a key labor demand shifter.","unit":"unit5"},{"topic":"factor_shifts","q":"Which change shifts labor demand to the left?","options":["A decrease in the price of the product labor produces","An increase in the wage rate","A decrease in worker preference for leisure","A higher retirement age","An increase in labor supply"],"ans":0,"exp":"A lower product price reduces MRP and labor demand.","unit":"unit5"},{"topic":"factor_shifts","q":"Which change shifts labor supply to the left?","options":["A stronger preference for leisure","A wage increase","A wage decrease","Higher product demand","Higher labor productivity"],"ans":0,"exp":"More preference for leisure reduces willingness to work at each wage.","unit":"unit5"},{"topic":"factor_shifts","q":"A wage increase causes","options":["an increase in quantity supplied of labor","an increase in labor supply","a decrease in labor demand","a rightward shift of labor demand","a leftward shift of labor supply always"],"ans":0,"exp":"Wage changes cause movements along labor supply.","unit":"unit5"},{"topic":"factor_shifts","q":"If many new workers enter a competitive labor market, equilibrium wage will likely","options":["decrease while employment increases","increase while employment decreases","increase while employment increases","decrease while employment decreases","not change"],"ans":0,"exp":"Labor supply shifts right, lowering wage and raising employment.","unit":"unit5"},{"topic":"factor_shifts","q":"If labor productivity increases, labor demand will","options":["increase","decrease","not change","become labor supply","shift left because wage rises"],"ans":0,"exp":"Higher productivity raises MRP.","unit":"unit5"},{"topic":"factor_shifts","q":"If a substitute input becomes cheaper, demand for labor will likely","options":["decrease","increase","not change","become vertical","equal product demand"],"ans":0,"exp":"Firms substitute toward the cheaper input and away from labor.","unit":"unit5"},{"topic":"factor_shifts","q":"If robots and workers are substitutes and robots become more expensive, demand for workers will likely","options":["increase","decrease","not change","fall to zero","equal robot supply"],"ans":0,"exp":"Workers become relatively cheaper, increasing labor demand.","unit":"unit5"},{"topic":"factor_shifts","q":"If a license requirement becomes more costly for plumbers, labor supply for plumbers will","options":["decrease","increase","not change","become horizontal","shift right"],"ans":0,"exp":"Higher barriers to entering an occupation reduce labor supply.","unit":"unit5"},{"topic":"factor_shifts","q":"If a safer workplace makes a job more attractive, labor supply for that job will likely","options":["increase","decrease","not change","cause product demand to fall","reduce labor productivity"],"ans":0,"exp":"Better working conditions increase willingness to supply labor.","unit":"unit5"},{"topic":"factor_shifts","q":"In a competitive labor market, a binding minimum wage causes","options":["a surplus of labor","a shortage of labor","higher quantity demanded of labor","lower quantity supplied of labor","no effect"],"ans":0,"exp":"A minimum wage above equilibrium creates unemployment, a labor surplus.","unit":"unit5"},{"topic":"factor_shifts","q":"A decrease in immigration restrictions would most likely shift labor supply","options":["right","left","not at all","down the demand curve","up the demand curve"],"ans":0,"exp":"More available workers shift labor supply right.","unit":"unit5"},{"topic":"pc_factor","q":"Marginal revenue product equals","options":["the extra revenue from hiring one more unit of a factor","wage divided by output","total revenue divided by labor","average product times fixed cost","labor supply minus labor demand"],"ans":0,"exp":"MRP measures the revenue added by one more factor unit.","unit":"unit5"},{"topic":"pc_factor","q":"In a competitive product market, MRP of labor equals","options":["MP × P","MP ÷ P","wage × output","ATC × Q","AFC ÷ labor"],"ans":0,"exp":"When MR equals price, MRP = MP × P.","unit":"unit5"},{"topic":"pc_factor","q":"A competitive firm hires workers until","options":["MRP = MFC","P = ATC","AFC = AVC","MRP = AP","labor supply = product supply"],"ans":0,"exp":"The hiring rule is MRP = MFC.","unit":"unit5"},{"topic":"pc_factor","q":"In a perfectly competitive labor market, marginal factor cost equals","options":["the wage","product price","average product","total product","consumer surplus"],"ans":0,"exp":"A wage-taking firm can hire each additional worker at the market wage.","unit":"unit5"},{"topic":"pc_factor","q":"If the wage is $80 and the next worker’s MRP is $100, the firm should","options":["hire the worker","not hire the worker","shut down always","lower product price","increase fixed cost"],"ans":0,"exp":"MRP exceeds wage, so the worker adds profit.","unit":"unit5"},{"topic":"pc_factor","q":"If the wage is $90 and the next worker’s MRP is $70, the firm should","options":["not hire the worker","hire the worker","increase employment forever","set wage equal to ATC","ignore MRP"],"ans":0,"exp":"The worker costs more than the revenue added.","unit":"unit5"},{"topic":"pc_factor","q":"If MP is 6 and product price is $10, MRP is","options":["$60","$6","$10","$16","$1.67"],"ans":0,"exp":"MRP = MP × P = 6 × 10 = $60.","unit":"unit5"},{"topic":"pc_factor","q":"If a worker adds 4 units and output sells for $25, that worker’s MRP is","options":["$100","$25","$4","$29","$6.25"],"ans":0,"exp":"MRP = 4 × 25 = $100.","unit":"unit5"},{"topic":"pc_factor","q":"A firm’s labor demand curve slopes downward mainly because","options":["marginal product eventually diminishes","wage always rises","labor supply slopes up","fixed cost rises","product demand is perfectly elastic"],"ans":0,"exp":"Falling MP lowers MRP as more labor is hired.","unit":"unit5"},{"topic":"pc_factor","q":"A change in fixed cost will not directly change the profit-maximizing amount of labor because","options":["fixed cost does not affect marginal decisions","fixed cost changes MRP","fixed cost shifts labor demand right","fixed cost is the wage","fixed cost equals MFC"],"ans":0,"exp":"Hiring decisions depend on MRP and MFC, not fixed cost.","unit":"unit5"},{"topic":"pc_factor","q":"If product price increases, a competitive firm’s MRP curve will","options":["shift right/up","shift left/down","not change","become labor supply","become horizontal at zero"],"ans":0,"exp":"MRP = MP × P, so higher P increases MRP.","unit":"unit5"},{"topic":"pc_factor","q":"A firm will hire the last worker for which","options":["MRP is at least wage","average product is highest","total product is lowest","wage is below AFC","MRP is negative"],"ans":0,"exp":"Discrete hiring uses the last worker where MRP ≥ MFC.","unit":"unit5"},{"topic":"cost_min","q":"A firm minimizes cost when","options":["MPL/PL = MPK/PK","MPL = MPK","PL = PK always","MRP = ATC","P = AVC"],"ans":0,"exp":"Cost minimization compares marginal product per dollar.","unit":"unit5"},{"topic":"cost_min","q":"If MPL/PL is greater than MPK/PK, the firm should use","options":["more labor and less capital","less labor and more capital","less of both","more of both always","no labor"],"ans":0,"exp":"Labor gives more output per dollar.","unit":"unit5"},{"topic":"cost_min","q":"If MPK/PK is greater than MPL/PL, the firm should use","options":["more capital and less labor","more labor and less capital","less of both","more labor only","no capital"],"ans":0,"exp":"Capital gives more output per dollar.","unit":"unit5"},{"topic":"cost_min","q":"If MPL = 40 and wage = $10, MPL per dollar is","options":["4","40","10","400","0.25"],"ans":0,"exp":"40/10 = 4 units of output per dollar.","unit":"unit5"},{"topic":"cost_min","q":"If MPK = 60 and rental price = $20, MPK per dollar is","options":["3","60","20","80","0.33"],"ans":0,"exp":"60/20 = 3 units per dollar.","unit":"unit5"},{"topic":"cost_min","q":"A firm has MPL/PL = 5 and MPK/PK = 2. To lower cost for the same output, it should","options":["use more labor and less capital","use less labor and more capital","use the same mix","use no labor","increase both prices"],"ans":0,"exp":"Labor has the higher marginal product per dollar.","unit":"unit5"},{"topic":"cost_min","q":"A firm has MPL/PL = 2 and MPK/PK = 5. It should","options":["use more capital and less labor","use more labor and less capital","use no capital","use the same mix","raise product price"],"ans":0,"exp":"Capital provides more output per dollar.","unit":"unit5"},{"topic":"cost_min","q":"The least-cost input rule uses","options":["marginal product per dollar","average product only","total product only","fixed cost only","consumer surplus"],"ans":0,"exp":"Cost minimization uses marginal productivity relative to input price.","unit":"unit5"},{"topic":"cost_min","q":"If the wage rises and productivity is unchanged, MPL/PL","options":["decreases","increases","does not change","becomes MPK","equals product price"],"ans":0,"exp":"A higher input price lowers output per dollar for labor.","unit":"unit5"},{"topic":"cost_min","q":"If capital becomes cheaper, the firm is likely to substitute toward","options":["capital","labor","leisure","fixed cost","product demand"],"ans":0,"exp":"A lower price raises capital’s marginal product per dollar.","unit":"unit5"},{"topic":"cost_min","q":"At the current input mix, MPL/PL equals MPK/PK. The firm is","options":["cost minimizing for that output","earning monopoly profit necessarily","producing zero output","not using marginal analysis","allocatively inefficient necessarily"],"ans":0,"exp":"Equal marginal product per dollar indicates least-cost mix.","unit":"unit5"},{"topic":"cost_min","q":"Comparing MP alone can be misleading because","options":["input prices may differ","MP is always zero","prices do not matter","MP equals MRP always","labor has no price"],"ans":0,"exp":"A more productive input may also be much more expensive.","unit":"unit5"},{"topic":"monopsony","q":"A monopsony is a market with","options":["one dominant buyer of labor","one seller of a product","many price-taking employers","no barriers to entry","perfectly elastic labor supply"],"ans":0,"exp":"A monopsony has buyer power in the factor market.","unit":"unit5"},{"topic":"monopsony","q":"For a monopsonist, the labor supply curve is usually","options":["upward sloping","horizontal at the wage","vertical at zero","the same as MRP","below zero"],"ans":0,"exp":"To hire more labor, it must pay a higher wage.","unit":"unit5"},{"topic":"monopsony","q":"For a monopsonist, marginal factor cost is","options":["above the labor supply curve","below the labor supply curve","equal to wage at all quantities","zero","the same as ATC"],"ans":0,"exp":"Raising the wage for one more worker usually raises wages for existing workers too.","unit":"unit5"},{"topic":"monopsony","q":"An unregulated monopsonist hires labor where","options":["MRP = MFC","MRP = wage supply","P = MC in the product market","ATC is minimized","wage = zero"],"ans":0,"exp":"The monopsonist chooses employment by setting MRP equal to MFC.","unit":"unit5"},{"topic":"monopsony","q":"After choosing employment in monopsony, the wage is found from","options":["the labor supply curve","the MFC curve","the product demand curve","the ATC curve","the AFC curve"],"ans":0,"exp":"The wage paid comes from the supply curve at the chosen employment.","unit":"unit5"},{"topic":"monopsony","q":"Compared with a competitive labor market, a monopsony usually pays","options":["lower wage and hires fewer workers","higher wage and hires more workers","same wage and same employment","higher wage and fewer workers","zero wage"],"ans":0,"exp":"Monopsony suppresses both wage and employment.","unit":"unit5"},{"topic":"monopsony","q":"A minimum wage in a monopsony can increase employment if","options":["it is set in the appropriate range above the monopsony wage","it is below the monopsony wage","it is infinitely high","it eliminates labor supply","it shifts MRP left"],"ans":0,"exp":"A well-set minimum wage can make MFC flat over a range and raise employment.","unit":"unit5"},{"topic":"monopsony","q":"In monopsony, a minimum wage can reduce the gap between","options":["MFC and labor supply","MRP and product demand","ATC and AVC","consumer surplus and producer surplus","fixed cost and variable cost"],"ans":0,"exp":"The minimum wage can flatten MFC over part of the labor supply curve.","unit":"unit5"},{"topic":"monopsony","q":"If a monopsonist faces an upward-sloping labor supply curve, hiring another worker requires","options":["raising the wage to attract more workers","lowering the wage for all workers","paying zero wage","reducing product demand","eliminating MRP"],"ans":0,"exp":"More workers are attracted only at higher wages.","unit":"unit5"},{"topic":"monopsony","q":"Monopsony power is most likely when","options":["one firm is the major employer in a local labor market","many firms compete for workers","workers can easily move among many employers","labor supply to the firm is perfectly elastic","all employers are wage takers"],"ans":0,"exp":"A dominant local employer can have buying power.","unit":"unit5"},{"topic":"monopsony","q":"The monopsonist’s profit-maximizing employment is where","options":["MFC intersects MRP","labor supply intersects MRP","wage equals product price","ATC equals AFC","P equals MC in product market"],"ans":0,"exp":"The decision uses marginal factor cost and marginal revenue product.","unit":"unit5"},{"topic":"monopsony","q":"If a minimum wage is set too high in a monopsony, it can","options":["reduce employment","always increase employment","make MRP zero","eliminate all unemployment","make labor supply vertical"],"ans":0,"exp":"A very high wage can create the usual unemployment effect.","unit":"unit5"}]},"unit6":{"title":"Unit 6: Market Failure and Government","topics":{"efficiency":"6.1 Socially Efficient and Inefficient Market Outcomes","externalities":"6.2 Externalities","public_goods":"6.3 Public and Private Goods","gov_intervention":"6.4 Government Intervention in Different Market Structures","inequality":"6.5 Inequality"},"questions":[{"topic":"efficiency","q":"The socially optimal quantity of a good occurs where","options":["marginal social benefit equals marginal social cost","total benefit equals total cost","marginal private cost is minimized","total benefit is maximized regardless of cost","price is zero"],"ans":0,"exp":"Efficiency requires MSB = MSC for the last unit.","unit":"unit6"},{"topic":"efficiency","q":"A cleanup project should continue as long as","options":["marginal benefit is at least marginal cost","total cost exceeds total benefit","marginal cost is greater than marginal benefit","total benefit is zero","marginal benefit is minimized"],"ans":0,"exp":"Activities should continue while MB ≥ MC.","unit":"unit6"},{"topic":"efficiency","q":"If the marginal benefit of pollution cleanup is $80 and the marginal cost is $50, society should","options":["increase cleanup","decrease cleanup","stop all cleanup","ignore marginal values","clean up only if total cost is zero"],"ans":0,"exp":"Since MB > MC, extra cleanup adds net benefit.","unit":"unit6"},{"topic":"efficiency","q":"If the marginal cost of an activity exceeds its marginal benefit, society should","options":["do less of the activity","do more of the activity","maximize total benefit","set price equal to zero","subsidize all output"],"ans":0,"exp":"When MC > MB, the activity creates net marginal loss.","unit":"unit6"},{"topic":"efficiency","q":"In a competitive market with no externalities, equilibrium is efficient because","options":["MSB equals MSC","MSB is always greater than MSC","MSC is always greater than MSB","deadweight loss is maximized","total cost equals zero"],"ans":0,"exp":"With no externalities, demand reflects MSB and supply reflects MSC.","unit":"unit6"},{"topic":"efficiency","q":"Deadweight loss occurs when","options":["quantity differs from the socially efficient quantity","price equals marginal cost","MSB equals MSC","all gains from trade occur","public goods are perfectly provided"],"ans":0,"exp":"DWL is the value of mutually beneficial trades not made or excess-cost trades made.","unit":"unit6"},{"topic":"efficiency","q":"If a market produces less than the socially optimal quantity, then at the market quantity","options":["MSB exceeds MSC","MSC exceeds MSB","MSB equals MSC","MC is zero","total benefit equals total cost"],"ans":0,"exp":"If output is too low, additional units have benefit greater than cost.","unit":"unit6"},{"topic":"efficiency","q":"If a market produces more than the socially optimal quantity, then at the market quantity","options":["MSC exceeds MSB","MSB exceeds MSC","MSB equals MSC","MSC is zero","marginal benefit is infinite"],"ans":0,"exp":"If output is too high, the last units cost society more than they benefit society.","unit":"unit6"},{"topic":"efficiency","q":"Allocative efficiency requires","options":["resources go to uses where MB equals MC","firms always earn profit","government always produces the good","consumer surplus equals producer surplus","price is always below cost"],"ans":0,"exp":"Allocative efficiency means no missed or wasteful marginal exchanges.","unit":"unit6"},{"topic":"efficiency","q":"A market failure occurs when","options":["the market outcome is not socially efficient","price equals marginal cost","all costs and benefits are internalized","perfect competition has no externalities","MSB equals MSC"],"ans":0,"exp":"Market failure means private incentives do not create the efficient outcome.","unit":"unit6"},{"topic":"efficiency","q":"Which condition indicates that a government intervention may improve efficiency?","options":["Private market quantity differs from the MSB = MSC quantity","The market has no DWL","P equals MC with no externalities","The intervention cost exceeds the DWL removed","Consumers and producers already internalize all effects"],"ans":0,"exp":"Intervention can help when a market failure creates inefficiency.","unit":"unit6"},{"topic":"efficiency","q":"If no externalities exist, marginal private benefit equals","options":["marginal social benefit","marginal fixed cost","average total cost","tax revenue","deadweight loss"],"ans":0,"exp":"Without externalities, private benefit captures social benefit.","unit":"unit6"},{"topic":"externalities","q":"A negative production externality occurs when","options":["MSC exceeds MPC","MPC exceeds MSC","MSB exceeds MPB","MPB exceeds MSB","price equals marginal cost"],"ans":0,"exp":"External costs make social cost greater than private cost.","unit":"unit6"},{"topic":"externalities","q":"With a negative externality, the unregulated market produces","options":["more than the socially optimal quantity","less than the socially optimal quantity","exactly the socially optimal quantity always","zero output","only public goods"],"ans":0,"exp":"Because producers ignore external cost, output is too high.","unit":"unit6"},{"topic":"externalities","q":"A positive consumption externality occurs when","options":["MSB exceeds MPB","MPC exceeds MSC","MSC exceeds MPC","MPB exceeds MSB","MC equals zero"],"ans":0,"exp":"External benefits make social benefit greater than private benefit.","unit":"unit6"},{"topic":"externalities","q":"With a positive externality, the private market produces","options":["less than the socially optimal quantity","more than the socially optimal quantity","exactly the efficient quantity always","only monopoly output","no deadweight loss always"],"ans":0,"exp":"Consumers ignore external benefits, so output is too low.","unit":"unit6"},{"topic":"externalities","q":"The marginal external cost is measured as","options":["MSC minus MPC","MPC minus MSC","MSB minus MPB","MPB minus MSB","price minus ATC"],"ans":0,"exp":"MEC is the vertical gap between social and private cost.","unit":"unit6"},{"topic":"externalities","q":"The marginal external benefit is measured as","options":["MSB minus MPB","MPB minus MSB","MSC minus MPC","MPC minus MSC","tax revenue minus subsidy"],"ans":0,"exp":"MEB is the vertical gap between social and private benefit.","unit":"unit6"},{"topic":"externalities","q":"A per-unit tax can correct a negative externality if it equals","options":["marginal external cost","marginal external benefit","consumer surplus","fixed cost","average product"],"ans":0,"exp":"A Pigouvian tax makes private decision makers internalize external cost.","unit":"unit6"},{"topic":"externalities","q":"A per-unit subsidy can correct a positive externality if it equals","options":["marginal external benefit","marginal external cost","average fixed cost","deadweight loss at every output","producer surplus"],"ans":0,"exp":"A subsidy encourages output toward the social optimum.","unit":"unit6"},{"topic":"externalities","q":"Which is an example of a negative externality?","options":["Factory pollution harming nearby residents","A lighthouse guiding ships","Vaccination reducing disease spread","A paid private dance lesson","A subscription streaming service"],"ans":0,"exp":"Pollution imposes costs on third parties.","unit":"unit6"},{"topic":"externalities","q":"Which is an example of a positive externality?","options":["A vaccine reducing disease transmission to others","A factory dumping waste into a river","Rush-hour traffic slowing other drivers","Noise from construction bothering neighbors","A cigarette smoker exposing others to smoke"],"ans":0,"exp":"Vaccination benefits people beyond the vaccinated person.","unit":"unit6"},{"topic":"externalities","q":"A lump-sum tax is usually ineffective at correcting a negative externality because it","options":["does not change marginal cost","shifts marginal cost upward by the external cost","directly lowers output to the social optimum","acts like a per-unit subsidy","raises marginal benefit"],"ans":0,"exp":"A lump-sum tax affects fixed cost, not the marginal production decision.","unit":"unit6"},{"topic":"externalities","q":"If cigarette smoke harms nonsmokers and prices are unregulated, cigarette output is likely","options":["too high and price too low","too low and price too high","efficient because markets always work","zero because firms cannot profit","too low because MSC is below MPC"],"ans":0,"exp":"External costs are ignored, so market price is too low and quantity too high.","unit":"unit6"},{"topic":"public_goods","q":"A pure public good is","options":["nonrival and nonexcludable","rival and excludable","rival and nonexcludable","nonrival and excludable","always free to produce"],"ans":0,"exp":"Pure public goods have both nonrivalry and nonexcludability.","unit":"unit6"},{"topic":"public_goods","q":"A private good is","options":["rival and excludable","nonrival and nonexcludable","rival and nonexcludable","nonrival and excludable","always produced by government"],"ans":0,"exp":"Private goods can be withheld from nonpayers and one person’s use reduces availability.","unit":"unit6"},{"topic":"public_goods","q":"A common resource is","options":["rival and nonexcludable","nonrival and nonexcludable","rival and excludable","nonrival and excludable","always a natural monopoly"],"ans":0,"exp":"Common resources can be overused because users cannot easily be excluded.","unit":"unit6"},{"topic":"public_goods","q":"A club good is","options":["nonrival and excludable","rival and nonexcludable","rival and excludable","nonrival and nonexcludable","always underproduced by law"],"ans":0,"exp":"Club goods can exclude nonpayers but one user does not greatly reduce availability.","unit":"unit6"},{"topic":"public_goods","q":"The free-rider problem is most associated with","options":["nonexcludability","rivalry","perfect competition only","price floors","monopsony"],"ans":0,"exp":"If nonpayers cannot be excluded, people may benefit without paying.","unit":"unit6"},{"topic":"public_goods","q":"National defense is usually classified as a public good because it is","options":["nonrival and nonexcludable","rival and excludable","nonrival and excludable","rival and nonexcludable","a private good sold for profit"],"ans":0,"exp":"Protection for one person does not reduce protection for others, and exclusion is difficult.","unit":"unit6"},{"topic":"public_goods","q":"A lighthouse is a common example of","options":["a public good","a private good","a monopolistic good","a rival good","an inferior good"],"ans":0,"exp":"A lighthouse is generally nonrival and nonexcludable.","unit":"unit6"},{"topic":"public_goods","q":"Private markets tend to underprovide public goods because","options":["people can free ride","marginal cost is always negative","public goods are always rival","public goods have no benefits","government bans private production"],"ans":0,"exp":"Firms have trouble collecting payment from everyone who benefits.","unit":"unit6"},{"topic":"public_goods","q":"The socially optimal quantity of a public good is found by","options":["summing individual marginal benefits and setting them equal to marginal cost","setting each person’s MB equal to zero","using only the highest willingness to pay","setting price equal to average fixed cost","minimizing total benefit"],"ans":0,"exp":"Public good benefits are added vertically across consumers.","unit":"unit6"},{"topic":"public_goods","q":"A congested public highway is best described as","options":["nonexcludable and rival","nonrival and nonexcludable","excludable and nonrival","rival and excludable always","a pure private good"],"ans":0,"exp":"Drivers may be hard to exclude, but one driver can reduce road space for others.","unit":"unit6"},{"topic":"public_goods","q":"Which situation best illustrates free riding?","options":["People enjoy streetlights without paying individually for them","A store gives free samples","A monopoly charges one price","A producer pays for all inputs","A firm lowers price to increase sales"],"ans":0,"exp":"Streetlights are hard to restrict to only paying residents.","unit":"unit6"},{"topic":"public_goods","q":"A good can be provided by government without being a pure public good because","options":["public-good status depends on rivalry and excludability, not provider","all government goods are nonrival","all government goods are nonexcludable","all public goods are free to produce","government provision makes a good rival"],"ans":0,"exp":"Classification depends on the good’s characteristics.","unit":"unit6"},{"topic":"gov_intervention","q":"A corrective tax on pollution works by","options":["raising private marginal cost toward social marginal cost","lowering social marginal cost below zero","raising marginal benefit","reducing fixed cost only","making demand perfectly elastic"],"ans":0,"exp":"A per-unit tax internalizes external cost.","unit":"unit6"},{"topic":"gov_intervention","q":"A subsidy for a positive externality works by","options":["encouraging consumption or production toward the social optimum","reducing output below the market level","raising external cost","creating a price ceiling","eliminating all costs"],"ans":0,"exp":"Subsidies encourage underproduced beneficial goods.","unit":"unit6"},{"topic":"gov_intervention","q":"Which policy best addresses a negative production externality?","options":["A per-unit tax equal to marginal external cost","A lump-sum tax","A subsidy to producers","A binding price ceiling below equilibrium","No policy because negative externalities are efficient"],"ans":0,"exp":"A per-unit tax shifts private cost toward social cost.","unit":"unit6"},{"topic":"gov_intervention","q":"Which policy best addresses a positive consumption externality?","options":["A subsidy to consumers","A per-unit tax on consumers","A lump-sum tax on firms","A quota reducing output","A ban on production"],"ans":0,"exp":"Subsidies increase the quantity toward the social optimum.","unit":"unit6"},{"topic":"gov_intervention","q":"Marginal-cost pricing regulation of monopoly sets","options":["P = MC","P = ATC","MR = MC","MR = 0","P = AFC"],"ans":0,"exp":"P = MC is allocatively efficient.","unit":"unit6"},{"topic":"gov_intervention","q":"Fair-return regulation of monopoly sets","options":["P = ATC","P = MC","MR = MC","P = zero","MC = zero"],"ans":0,"exp":"Fair-return pricing allows normal profit.","unit":"unit6"},{"topic":"gov_intervention","q":"A natural monopoly may need a subsidy under marginal-cost pricing because","options":["P may be below ATC","P is always above ATC","MC is always above demand","demand is perfectly elastic","profit is guaranteed positive"],"ans":0,"exp":"If price equals MC and ATC exceeds price, the firm loses money.","unit":"unit6"},{"topic":"gov_intervention","q":"Antitrust policy is generally intended to","options":["reduce market power and improve competition","increase deadweight loss","make all goods public goods","encourage collusion","eliminate marginal cost"],"ans":0,"exp":"Antitrust targets monopoly power and anticompetitive behavior.","unit":"unit6"},{"topic":"gov_intervention","q":"Assigning property rights can reduce externalities when","options":["transaction costs are low enough for bargaining","external costs are infinite","there are no affected parties","the good is always public","marginal benefit is zero"],"ans":0,"exp":"Clear rights can allow parties to bargain toward efficiency.","unit":"unit6"},{"topic":"gov_intervention","q":"A policy intervention improves efficiency only if","options":["the benefit of the improvement exceeds the cost of intervention","it eliminates all pollution","it maximizes government revenue","it makes price zero","it raises every firm’s profit"],"ans":0,"exp":"Policy has opportunity costs that must be compared with benefits.","unit":"unit6"},{"topic":"gov_intervention","q":"Pollution taxes are often preferred because they","options":["encourage firms to find low-cost ways to reduce pollution","eliminate all pollution automatically","do not affect output","are lump-sum taxes","increase pollution"],"ans":0,"exp":"Firms choose the cheapest abatement methods when taxed per unit of pollution.","unit":"unit6"},{"topic":"gov_intervention","q":"If a policy moves output to where MSB = MSC, the policy","options":["eliminates the market inefficiency from the externality","must have reduced output always","must have increased output always","must have zero implementation cost","must create monopoly"],"ans":0,"exp":"Efficiency is restored at MSB = MSC.","unit":"unit6"},{"topic":"inequality","q":"Income is best defined as","options":["a flow of earnings over time","the total value of assets owned","only physical property","a measure from 0 to 1","a stock variable"],"ans":0,"exp":"Income is earned over a period of time.","unit":"unit6"},{"topic":"inequality","q":"Wealth is best defined as","options":["the total value of assets minus liabilities at a point in time","wages earned per hour","annual salary only","government transfer payments only","the Gini coefficient"],"ans":0,"exp":"Wealth is a stock of net assets.","unit":"unit6"},{"topic":"inequality","q":"A Lorenz curve shows","options":["the distribution of income or wealth","marginal cost of pollution","the demand for public goods","the supply of labor","monopoly marginal revenue"],"ans":0,"exp":"Lorenz curves graph cumulative population against cumulative income/wealth share.","unit":"unit6"},{"topic":"inequality","q":"A Gini coefficient of 0 means","options":["perfect equality","maximum inequality","zero income","maximum wealth","no government"],"ans":0,"exp":"0 means everyone has the same income share.","unit":"unit6"},{"topic":"inequality","q":"A Gini coefficient closer to 1 indicates","options":["greater inequality","greater equality","perfect public-good provision","zero deadweight loss","allocative efficiency"],"ans":0,"exp":"Higher Gini means more unequal distribution.","unit":"unit6"},{"topic":"inequality","q":"Human capital differences can create income inequality because","options":["education and skills affect productivity and wages","all workers have identical productivity","income is unrelated to productivity","taxes cannot affect income","wealth is always zero"],"ans":0,"exp":"Human capital affects earning potential.","unit":"unit6"},{"topic":"inequality","q":"A progressive income tax is one where","options":["higher-income people pay a larger percentage of income","everyone pays the same dollar amount","lower-income people pay a higher percentage","no one pays tax","only wealth is taxed"],"ans":0,"exp":"Progressive taxes raise average tax rates with income.","unit":"unit6"},{"topic":"inequality","q":"Transfer payments can reduce measured income inequality by","options":["raising income of recipients","increasing monopoly power","increasing pollution","reducing public goods","eliminating all taxes"],"ans":0,"exp":"Transfers increase recipients’ income.","unit":"unit6"},{"topic":"inequality","q":"Free primary education may reduce future inequality by","options":["increasing human capital for more people","creating negative externalities","reducing all wages","eliminating all opportunity cost","making education nonrival"],"ans":0,"exp":"Education can improve skills and future earning potential.","unit":"unit6"},{"topic":"inequality","q":"The equity-efficiency trade-off means","options":["policies that reduce inequality may have costs or incentive effects","equality always increases efficiency","efficiency always requires equal incomes","redistribution has no opportunity cost","taxes never affect behavior"],"ans":0,"exp":"Redistribution can help equity while affecting incentives or resource use.","unit":"unit6"},{"topic":"inequality","q":"If the Lorenz curve moves farther from the line of perfect equality, inequality","options":["increases","decreases","becomes zero","is unchanged","cannot be measured"],"ans":0,"exp":"A more bowed Lorenz curve indicates more inequality.","unit":"unit6"},{"topic":"inequality","q":"Wealth inequality is often greater than income inequality because","options":["assets accumulate over time","income is never earned","wealth cannot be inherited","everyone has the same assets","transfers only affect wealth"],"ans":0,"exp":"Wealth can accumulate and be passed across generations.","unit":"unit6"}]}};
+const unitOrder = ["unit1","unit2","unit3","unit4","unit5","unit6"].filter(u => banks[u]);
+const storeKey = "apmicro_all_units_practice_mastery_v1";
+const themeKey = "apmicro_all_units_practice_theme_v3";
+const MASTER_STREAK = 5;
+const UNIT_MASTER_POINTS = 10;
+let state = {activeUnit:unitOrder[0],progress:{},sessionCorrect:0,sessionAnswered:0,current:null,selected:null,scored:false,pool:[],poolIndex:0};
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]||c));}
+
+function applyTheme(theme){
+  const normalized = theme === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", normalized);
+  localStorage.setItem(themeKey, normalized);
+  const btn = document.getElementById("themeToggleBtn");
+  if(btn){
+    btn.textContent = normalized === "dark" ? "Light mode" : "Dark mode";
+    btn.setAttribute("aria-pressed", normalized === "dark" ? "true" : "false");
+  }
+}
+function initTheme(){
+  let saved = localStorage.getItem(themeKey);
+  if(!saved){
+    saved = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  applyTheme(saved);
+}
+function toggleTheme(){
+  const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  applyTheme(current === "dark" ? "light" : "dark");
+}
+
+function initProgress(){unitOrder.forEach(u=>{if(!state.progress[u])state.progress[u]={points:0,streak:0,correct:0,answered:0,mastered:false};});}
+function loadState(){try{const saved=JSON.parse(localStorage.getItem(storeKey)||"{}");if(saved&&typeof saved==="object"){state.activeUnit=saved.activeUnit||state.activeUnit;state.progress=saved.progress||{};}}catch(e){}state.sessionCorrect=0;state.sessionAnswered=0;state.current=null;state.selected=null;state.scored=false;initProgress();}
+function saveState(){localStorage.setItem(storeKey,JSON.stringify({activeUnit:state.activeUnit,progress:state.progress}));}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700);}
+function pct(u){return Math.min(100,Math.round((state.progress[u].points/UNIT_MASTER_POINTS)*100));}
+function unitStatus(u){const p=state.progress[u];if(p.points>=UNIT_MASTER_POINTS||p.mastered)return"Mastered";if(p.points>=7)return"Almost";if(p.points>=3)return"Developing";return"Starting";}
+function topicLabel(unit,topic){return banks[unit].topics[topic]||topic||"Mixed topic";}
+function renderSelectors(){const unitSelect=document.getElementById("unitSelect");unitSelect.innerHTML=unitOrder.map(u=>`<option value="${u}" ${u===state.activeUnit?"selected":""}>${esc(banks[u].title)}</option>`).join("");renderTopicSelect();}
+function renderTopicSelect(){const topicSelect=document.getElementById("topicSelect");const topics=banks[state.activeUnit].topics;topicSelect.innerHTML=Object.keys(topics).map(t=>`<option value="${t}">${esc(topics[t])}</option>`).join("");}
+function renderProgressDrawer(){
+  const list=document.getElementById("unitProgressList");
+  list.innerHTML=unitOrder.map(u=>{
+    const p=state.progress[u];
+    const mastered=p.points>=UNIT_MASTER_POINTS||p.mastered;
+    return `<article class="unitProgress">
+      <div class="unitProgressTop">
+        <span>${esc(banks[u].title)}</span>
+        <span class="statusPill ${mastered?"mastered":""}">${mastered?"Mastered":p.points+"/10"}</span>
+      </div>
+      <div class="progress"><div class="bar" style="width:${pct(u)}%"></div></div>
+      <div class="miniStats">
+        <div class="miniStat"><strong>${p.streak}/5</strong><br>streak</div>
+        <div class="miniStat"><strong>${p.correct}</strong><br>correct</div>
+        <div class="miniStat"><strong>${p.answered}</strong><br>answered</div>
+      </div>
+    </article>`;
+  }).join("");
+}
+function renderHeader(){
+  const u=state.activeUnit;
+  const p=state.progress[u];
+  const mastered=p.points>=UNIT_MASTER_POINTS||p.mastered;
+  document.getElementById("activeUnitChip").textContent=banks[u].title;
+  document.getElementById("sessionChip").textContent=`${state.sessionCorrect} correct / ${state.sessionAnswered} answered`;
+  document.getElementById("streakChip").textContent=`Streak ${p.streak}/5`;
+  document.getElementById("compactMasteryText").textContent=`${mastered?"Mastered":unitStatus(u)} · ${p.points}/10 mastery points`;
+  document.getElementById("compactMasteryBar").style.width=pct(u)+"%";
+}
+function getPoolQuestions(){
+  const mode=document.getElementById("modeSelect").value;
+  let unit=state.activeUnit;
+  if(mode==="weak")unit=weakestUnit();
+  if(mode==="all"){
+    let all=[];
+    unitOrder.forEach(u=>banks[u].questions.forEach(q=>all.push({...q,unit:u})));
+    return all;
+  }
+  if(mode==="topic"){
+    const topic=document.getElementById("topicSelect").value;
+    return banks[unit].questions.filter(q=>q.topic===topic).map(q=>({...q,unit}));
+  }
+  return banks[unit].questions.map(q=>({...q,unit}));
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+function rebuildPool(){state.pool=getPoolQuestions();if(document.getElementById("orderSelect").value==="shuffle")shuffle(state.pool);state.poolIndex=0;}
+function weakestUnit(){let w=unitOrder[0];unitOrder.forEach(u=>{if(state.progress[u].points<state.progress[w].points)w=u;else if(state.progress[u].points===state.progress[w].points&&state.progress[u].streak<state.progress[w].streak)w=u;});return w;}
+function nextQuestion(){
+  if(!state.pool||state.pool.length===0||state.poolIndex>=state.pool.length)rebuildPool();
+  if(!state.pool.length){document.getElementById("questionText").textContent="No questions available for this selection.";document.getElementById("optionsBox").innerHTML="";return;}
+  state.current=state.pool[state.poolIndex];
+  state.poolIndex++;
+  state.selected=null;
+  state.scored=false;
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=state.current;
+  if(!q)return;
+  document.getElementById("topicChip").textContent=topicLabel(q.unit,q.topic);
+  document.getElementById("questionText").textContent=q.q;
+  document.getElementById("optionsBox").innerHTML=q.options.map((o,i)=>`<button class="option" data-index="${i}">${esc(o)}</button>`).join("");
+  const fb=document.getElementById("feedbackBox");
+  fb.className="feedback";
+  fb.innerHTML="";
+  document.querySelectorAll(".option").forEach(btn=>{
+    btn.onclick=()=>{
+      if(state.scored)return;
+      state.selected=Number(btn.dataset.index);
+      document.querySelectorAll(".option").forEach(b=>b.classList.remove("selected"));
+      btn.classList.add("selected");
+    };
+  });
+  renderAll();
+}
+function checkAnswer(){
+  const q=state.current,fb=document.getElementById("feedbackBox");
+  if(!q)return;
+  if(state.selected===null){
+    fb.className="feedback show bad";
+    fb.innerHTML="<strong>Choose an answer first.</strong>";
+    return;
+  }
+  const correct=state.selected===q.ans;
+  document.querySelectorAll(".option").forEach(btn=>{
+    const idx=Number(btn.dataset.index);
+    btn.classList.toggle("correct",idx===q.ans);
+    btn.classList.toggle("wrong",idx===state.selected&&idx!==q.ans);
+    btn.disabled=true;
+  });
+  if(state.scored){
+    fb.className="feedback show "+(correct?"good":"bad");
+    fb.innerHTML="<strong>Already checked.</strong> Click Next Question.";
+    return;
+  }
+  const unit=q.unit,p=state.progress[unit];
+  state.scored=true;
+  state.sessionAnswered++;
+  p.answered++;
+  if(correct){
+    state.sessionCorrect++;
+    p.correct++;
+    p.streak++;
+    let pointMsg="";
+    if(p.streak>=MASTER_STREAK){
+      p.points++;
+      p.streak=0;
+      if(p.points>=UNIT_MASTER_POINTS){
+        p.points=UNIT_MASTER_POINTS;
+        p.mastered=true;
+        pointMsg=`<br><br><strong>🏆 Unit mastered!</strong> ${banks[unit].title} reached 10 mastery points.`;
+      }else{
+        pointMsg="<br><br><strong>+1 mastery point earned.</strong> You completed a 5-correct streak.";
+      }
+      toast(pointMsg.includes("Unit mastered")?"Unit mastered":"+1 mastery point");
+    }
+    fb.className="feedback show good";
+    fb.innerHTML=`<strong>Correct.</strong> ${esc(q.exp)}<br><br><strong>${banks[unit].title}:</strong> ${p.points}/10 mastery points · streak ${p.streak}/5${pointMsg}`;
+  }else{
+    p.streak=0;
+    fb.className="feedback show bad";
+    fb.innerHTML=`<strong>Not quite.</strong> ${esc(q.exp)}<br><br>The streak for <strong>${banks[unit].title}</strong> reset to 0/5.`;
+  }
+  saveState();
+  renderAll();
+}
+function renderAll(){renderHeader();renderProgressDrawer();}
+function openDrawer(){
+  const d=document.getElementById("progressDrawer");
+  d.classList.add("open");
+  d.setAttribute("aria-hidden","false");
+  document.getElementById("openProgressBtn").setAttribute("aria-expanded","true");
+  document.getElementById("closeProgressBtn").focus();
+}
+function closeDrawer(){
+  const d=document.getElementById("progressDrawer");
+  d.classList.remove("open");
+  d.setAttribute("aria-hidden","true");
+  document.getElementById("openProgressBtn").setAttribute("aria-expanded","false");
+  document.getElementById("openProgressBtn").focus();
+}
+function resetUnit(){
+  const u=state.activeUnit;
+  if(!confirm(`Reset progress for ${banks[u].title}?`))return;
+  state.progress[u]={points:0,streak:0,correct:0,answered:0,mastered:false};
+  saveState();
+  renderAll();
+  toast("Unit progress reset");
+}
+function resetAll(){
+  if(!confirm("Reset all saved practice progress?"))return;
+  localStorage.removeItem(storeKey);
+  state.progress={};
+  initProgress();
+  state.sessionCorrect=0;
+  state.sessionAnswered=0;
+  rebuildPool();
+  nextQuestion();
+  renderAll();
+  toast("All progress reset");
+}
+function bind(){
+  document.getElementById("unitSelect").onchange=e=>{
+    state.activeUnit=e.target.value;
+    saveState();
+    renderTopicSelect();
+    rebuildPool();
+    nextQuestion();
+    renderAll();
+  };
+  document.getElementById("topicSelect").onchange=()=>{rebuildPool();nextQuestion();};
+  document.getElementById("modeSelect").onchange=()=>{
+    document.getElementById("topicControl").classList.toggle("hidden",document.getElementById("modeSelect").value!=="topic");
+    rebuildPool();
+    nextQuestion();
+  };
+  document.getElementById("orderSelect").onchange=()=>{rebuildPool();nextQuestion();};
+  document.getElementById("checkBtn").onclick=checkAnswer;
+  document.getElementById("nextBtn").onclick=nextQuestion;
+  document.getElementById("jumpWeakBtn").onclick=()=>{
+    state.activeUnit=weakestUnit();
+    document.getElementById("unitSelect").value=state.activeUnit;
+    document.getElementById("modeSelect").value="unit";
+    document.getElementById("topicControl").classList.add("hidden");
+    renderTopicSelect();
+    rebuildPool();
+    nextQuestion();
+    renderAll();
+    toast("Jumped to weakest unit");
+  };
+  document.getElementById("openProgressBtn").onclick=openDrawer;
+  document.getElementById("closeProgressBtn").onclick=closeDrawer;
+  document.getElementById("drawerScrim").onclick=closeDrawer;
+  document.getElementById("resetUnitBtn").onclick=resetUnit;
+  document.getElementById("themeToggleBtn").onclick=toggleTheme;document.getElementById("resetAllBtn").onclick=resetAll;
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("progressDrawer").classList.contains("open"))closeDrawer();});
+}
+function init(){
+  initTheme();
+  loadState();
+  renderSelectors();
+  bind();
+  rebuildPool();
+  nextQuestion();
+  renderAll();
+}
+init();
+</script>
+</body>
+</html>
